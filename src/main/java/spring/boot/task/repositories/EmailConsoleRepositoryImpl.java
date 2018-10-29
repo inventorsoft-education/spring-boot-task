@@ -1,6 +1,7 @@
-package spring.boot.task;
+package spring.boot.task.repositories;
+
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.*;
@@ -9,15 +10,24 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Component
-public class EmailConsoleReader {
-    public String inputRecipientAddress() throws IOException {
+@Repository
+public class EmailConsoleRepositoryImpl implements EmailRepository {
+    public String writeRecipientAddress() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the recipient's email address: ");
-        String emailAddress = bufferedReader.readLine();
+        String emailAddress = null;
+        try {
+            emailAddress = bufferedReader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (!isValidEmailAddress(emailAddress)) {
             System.out.println("Please enter the recipient's email address: ");
-            emailAddress = bufferedReader.readLine();
+            try {
+                emailAddress = bufferedReader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return emailAddress;
     }
@@ -31,24 +41,42 @@ public class EmailConsoleReader {
         }
         return result;
     }
-    public String inputSubject() throws IOException {
+    public String writeSubject(){
         BufferedReader bufferedReaderSubject = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Please enter the subject of the email: ");
-        String subject = bufferedReaderSubject.readLine();
-        if (subject == null || subject.isEmpty()) {
-            System.out.println("Please enter the subject of the email: ");
+        System.out.println("Please enter the email subject: ");
+        String subject = null;
+        try {
             subject = bufferedReaderSubject.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (subject == null || subject.isEmpty()) {
+            System.out.println("Please enter the email subject: ");
+            try {
+                subject = bufferedReaderSubject.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return subject;
     }
-    public String inputText() throws IOException {
+    public String writeText() {
 
         BufferedReader bufferedReaderText = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the email text: ");
-        String text = bufferedReaderText.readLine();
+        String text = null;
+        try {
+            text = bufferedReaderText.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (text == null || text.isEmpty()) {
             System.out.println("Please enter the email text: ");
-            text = bufferedReaderText.readLine();
+            try {
+                text = bufferedReaderText.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return text;
     }
@@ -62,14 +90,23 @@ public class EmailConsoleReader {
         }
         return true;
     }
-    public Date inputDate() throws IOException {
+    public Date writeDate() {
 
         BufferedReader bufferedReaderDate = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the date of sending: ");
-        String dateString = bufferedReaderDate.readLine();
+        String dateString = null;
+        try {
+            dateString = bufferedReaderDate.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while ( ! isDateValid(dateString) ) {
             System.out.println(" Date is invalid. Please enter in format: Day.Month.Year Hours:minutes");
-            dateString = bufferedReaderDate.readLine();
+            try {
+                dateString = bufferedReaderDate.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
             return (new SimpleDateFormat("dd.MM.yy HH:mm")).parse(dateString);
@@ -78,12 +115,12 @@ public class EmailConsoleReader {
             return new Date();
         }
     }
-    public SimpleMailMessage readFromConsole() throws IOException {
+    public SimpleMailMessage readEmail() {
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(inputRecipientAddress());
-        email.setSubject(inputSubject());
-        email.setText(inputText());
-        email.setSentDate(inputDate());
+        email.setTo(writeRecipientAddress());
+        email.setSubject(writeSubject());
+        email.setText(writeText());
+        email.setSentDate(writeDate());
         return email;
     }
 }
