@@ -1,31 +1,37 @@
 package spring.boot.task.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
-import spring.boot.task.repositories.EmailRepository;
+import spring.boot.task.EmailConsoleReader;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements EmailService, Runnable {
     private JavaMailSender javaMailSender;
-    private EmailRepository emailConsoleReader;
-    private String fileName = "email";
+    private EmailConsoleReader emailConsoleReader;
+    private TaskScheduler taskScheduler;
+    @Value("${email.filename}")
+    private String fileName;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender, EmailRepository emailConsoleReader){
+    public EmailServiceImpl(JavaMailSender javaMailSender,
+                            EmailConsoleReader emailConsoleReader,
+                            TaskScheduler taskScheduler)  {
         this.javaMailSender = javaMailSender;
         this.emailConsoleReader = emailConsoleReader;
+        this.taskScheduler = taskScheduler;
     }
     public SimpleMailMessage getEmail() throws IOException {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 
-        if (Files.exists(Paths.get("email"))) {
+        if (Files.exists(Paths.get(fileName))) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
                 simpleMailMessage = (SimpleMailMessage) ois.readObject();
             } catch (Exception ex) {
@@ -44,18 +50,27 @@ public class EmailServiceImpl implements EmailService {
         return simpleMailMessage;
     }
     public void clearEmail() throws IOException {
-        if (Files.exists(Paths.get("email"))){
-            Files.delete(Paths.get("email"));
+        if (Files.exists(Paths.get(fileName))) {
+            Files.delete(Paths.get(fileName));
         }
     }
-    @Async
-    public void sendScheduledEmail() throws Exception {
-        SimpleMailMessage email = getEmail();
-        long timeToWaite = email.getSentDate().getTime() - (new Date()).getTime();
-        if(timeToWaite > 0) {
-            Thread.sleep(timeToWaite);
+    @Override
+    public void run() {
+        SimpleMailMessage email = null;
+        try {
+            email = getEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         javaMailSender.send(email);
-        clearEmail();
+        try {
+            clearEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
+    }
+    public void sendScheduledEmail(SimpleMailMessage simpleMailMessage) {
+        taskScheduler.schedule(() -> run(), simpleMailMessage.getSentDate().compareTo(new Date()) <= 0 ? new Date() : simpleMailMessage.getSentDate());
     }
 }

@@ -1,4 +1,4 @@
-package spring.boot.task.repositories;
+package spring.boot.task;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Repository;
@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Repository
-public class EmailConsoleRepositoryImpl implements EmailRepository {
-    public String writeRecipientAddress() {
+public class EmailConsoleReader {
+    private String writeRecipientAddress() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the recipient's email address: ");
         String emailAddress = null;
@@ -31,7 +31,7 @@ public class EmailConsoleRepositoryImpl implements EmailRepository {
         }
         return emailAddress;
     }
-    public static boolean isValidEmailAddress(String email) {
+    private boolean isValidEmailAddress(String email) {
         boolean result = true;
         try {
             InternetAddress emailAddr = new InternetAddress(email);
@@ -41,7 +41,7 @@ public class EmailConsoleRepositoryImpl implements EmailRepository {
         }
         return result;
     }
-    public String writeSubject(){
+    private String writeSubject(){
         BufferedReader bufferedReaderSubject = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the email subject: ");
         String subject = null;
@@ -60,7 +60,7 @@ public class EmailConsoleRepositoryImpl implements EmailRepository {
         }
         return subject;
     }
-    public String writeText() {
+    private String writeText() {
 
         BufferedReader bufferedReaderText = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the email text: ");
@@ -90,7 +90,7 @@ public class EmailConsoleRepositoryImpl implements EmailRepository {
         }
         return true;
     }
-    public Date writeDate() {
+    private Date writeDate() {
 
         BufferedReader bufferedReaderDate = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter the date of sending: ");
