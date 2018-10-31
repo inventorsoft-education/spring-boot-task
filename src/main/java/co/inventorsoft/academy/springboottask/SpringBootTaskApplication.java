@@ -12,15 +12,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @SpringBootApplication
-@EnableAsync
 public class SpringBootTaskApplication implements CommandLineRunner {
 
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private EmailDAO emailDAO;
+	@Autowired
+	private EmailConsole emailConsole;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootTaskApplication.class, args);
@@ -32,6 +36,7 @@ public class SpringBootTaskApplication implements CommandLineRunner {
 	}
 
 	@Bean
+	@Scope("prototype")
 	public SimpleMailMessage deafultEmail(
 								@Value("${test.mail.addr}") String addr,
 								@Value("${test.mail.subj}") String subj,
@@ -44,9 +49,17 @@ public class SpringBootTaskApplication implements CommandLineRunner {
 		email.setSentDate( Date.from(LocalDateTime.now().plusSeconds(delay).atZone(ZoneId.systemDefault()).toInstant()) );
 		return email;
 	}
+
+	@Bean
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
+        return new ThreadPoolTaskScheduler();
+    }
 	
 	@Override
 	public void run(String... args) {
+		emailDAO.add( emailConsole.getEmails() );
+		emailDAO.save();
 		emailService.sendFutureEmail();
 	}
+	
 }

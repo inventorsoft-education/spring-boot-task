@@ -7,8 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Repository;
@@ -16,49 +17,72 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class EmailFile implements EmailDAO {
 	
-	@Autowired
-	private SimpleMailMessage email;
-	
-	@Value("${email.file}")
 	private String file;
+	private List<SimpleMailMessage> emails;
 	
-	@Override
-	public SimpleMailMessage getEmail() {
-		SimpleMailMessage mailConsole;
+	@SuppressWarnings("unchecked")
+	public EmailFile(@Value("${email.file}") String file) {
+		this.file = file;
+		emails = new CopyOnWriteArrayList<SimpleMailMessage>();
 		if(Files.exists(Paths.get(file))) {
 			try(FileInputStream fis = new FileInputStream(file); 
 				ObjectInputStream ois = new ObjectInputStream(fis)) {
-						email = (SimpleMailMessage) ois.readObject();
+						emails = (CopyOnWriteArrayList<SimpleMailMessage>) ois.readObject();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
-				mailConsole = EmailConsole.readFromConsole();
-				if(mailConsole != null) {
-					email = mailConsole;
-				}
-			}
-		} else {
-			mailConsole = EmailConsole.readFromConsole();
-			if(mailConsole != null) {
-				email = mailConsole;
 			}
 		}
-		return email;
 	}
 
 	@Override
-	public void saveEmail() {
-		clearEmail();
+	public List<SimpleMailMessage> getAll() {
+		return emails;
+	}
+	
+	@Override
+	public SimpleMailMessage get(int id) {
+		return emails.get(id);
+	}
+	
+	@Override
+	public void add(SimpleMailMessage email) {
+		emails.add(email);
+	}
+	
+	@Override
+	public void add(List<SimpleMailMessage> emails) {
+		this.emails.addAll(emails);
+	}
+
+	@Override
+	public void delete(SimpleMailMessage email) {
+		emails.remove(email);
+	}
+
+	@Override
+	public void delete(int id) {
+		emails.remove(id);
+	}
+	
+	@Override
+	public void clear() {
+		emails.clear();
+		deleteEmailFile();
+	}
+
+	@Override
+	public synchronized void save() {
+		deleteEmailFile();
 		try(FileOutputStream fos = new FileOutputStream(file); 
 			ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-					oos.writeObject(email);
+					oos.writeObject(emails);
 		} catch (IOException e) {
 			e.printStackTrace();
-			clearEmail();
+			deleteEmailFile();
 		}
 	}
 
-	@Override
-	public void clearEmail() {
+	private synchronized void deleteEmailFile() {
 		try {
 			Files.deleteIfExists(Paths.get(file));
 		} catch (IOException e) {

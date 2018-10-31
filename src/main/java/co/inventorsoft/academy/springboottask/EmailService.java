@@ -1,13 +1,12 @@
 package co.inventorsoft.academy.springboottask;
 
-import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,32 +15,38 @@ public class EmailService {
 	private JavaMailSender emailSender;
 	private Logger log;
 	private EmailDAO emailDAO;
+	private ThreadPoolTaskScheduler scheduler;
 	
 	@Autowired
-	public EmailService(JavaMailSender emailSender, Logger log, @Qualifier("emailFile") EmailDAO emailDAO) {
+	public EmailService(JavaMailSender emailSender, Logger log, EmailDAO emailDAO, ThreadPoolTaskScheduler scheduler) {
 		this.emailSender = emailSender;
 		this.log = log;
 		this.emailDAO = emailDAO;
+		this.scheduler = scheduler;
 	}
 
-	@Async
 	public void sendFutureEmail() {
-		SimpleMailMessage email = emailDAO.getEmail();
-		emailDAO.saveEmail();
-		try{
-			long milliesToWait = email.getSentDate().getTime() - (new Date()).getTime();
-			if(milliesToWait > 0) {
-				log.warn(" Waiting... {} ", email.getSentDate());
-				Thread.sleep(milliesToWait);
-			}
-			log.info("\n E-mail \n To: {} \n Subject: {} \n Date: {} ", email.getTo(), email.getSubject(), email.getSentDate());
-			emailSender.send(email);
-			emailDAO.clearEmail();
+		List<SimpleMailMessage> emails = emailDAO.getAll();
+        scheduler.setPoolSize(2);
+        scheduler.setThreadNamePrefix("EmailScheduler");
+        scheduler.setWaitForTasksToCompleteOnShutdown(true);
+		for(SimpleMailMessage email : emails) {
+			log.info(" E-mail  To:{}  Subject:{}  Date:{} ",email.getTo(),email.getSubject(),email.getSentDate());
+			scheduler.schedule( () -> 
+				{
+					try{
+						log.info("\n Sending E-mail \n To: {} \n Subject: {} \n Date: {} ",email.getTo(),email.getSubject(),email.getSentDate());
+						emailSender.send(email);
+						emailDAO.delete(email);
+						emailDAO.save();
+					} catch(Exception e) {
+						log.warn(" E-mail  To:{}  Subject:{}  Date:{} ",email.getTo(),email.getSubject(),email.getSentDate());
+						log.error(e.getMessage());
+					}
+				},
+				email.getSentDate() );
 		}
-		catch(Exception e) {
-			log.warn(" E-mail was not sent ");
-			log.error(e.getMessage());
-		}
+		scheduler.shutdown();
 	}
 
 }
