@@ -1,5 +1,6 @@
 package com.sender.email;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +16,11 @@ public class Email implements Serializable {
 
     private String body;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm")
     private Date deliveryDate;
 
     private Boolean isSent;
+
 
     Email() {
         recipient = "A1lexen30@gmail.com";
@@ -29,7 +32,7 @@ public class Email implements Serializable {
 
     @Override
     public String toString() {
-        return "\nRecipient: " + recipient + "\n Subject: " + subject + " Delivery date: " + deliveryDate + "\n isSent: " + isSent;
+        return "\nRecipient: " + recipient + "\n Subject: " + subject + "\n Body: " + body + "\n Delivery date: " + deliveryDate + "\n isSent: " + isSent;
     }
 
     @Override

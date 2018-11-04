@@ -64,6 +64,7 @@ public class EmailFileProcessingImpl implements EmailProcessing {
 
     @Override
     public List<Email> getAll() {
+        loadFromFile();
         return emails;
     }
 
