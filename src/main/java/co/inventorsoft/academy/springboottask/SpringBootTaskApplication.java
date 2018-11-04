@@ -51,8 +51,12 @@ public class SpringBootTaskApplication implements CommandLineRunner {
 	}
 
 	@Bean
-    public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
-        return new ThreadPoolTaskScheduler();
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
+		ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+		threadPoolTaskScheduler.setPoolSize(2);
+		threadPoolTaskScheduler.setThreadNamePrefix("EmailScheduler");
+		threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(true);
+        return threadPoolTaskScheduler;
     }
 	
 	@Override

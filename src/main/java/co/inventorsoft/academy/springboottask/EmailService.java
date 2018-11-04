@@ -27,9 +27,6 @@ public class EmailService {
 
 	public void sendFutureEmail() {
 		List<SimpleMailMessage> emails = emailDAO.getAll();
-        scheduler.setPoolSize(2);
-        scheduler.setThreadNamePrefix("EmailScheduler");
-        scheduler.setWaitForTasksToCompleteOnShutdown(true);
 		for(SimpleMailMessage email : emails) {
 			log.info(" E-mail  To:{}  Subject:{}  Date:{} ",email.getTo(),email.getSubject(),email.getSentDate());
 			scheduler.schedule( () -> 
@@ -46,7 +43,6 @@ public class EmailService {
 				},
 				email.getSentDate() );
 		}
-		scheduler.shutdown();
 	}
 
 }
