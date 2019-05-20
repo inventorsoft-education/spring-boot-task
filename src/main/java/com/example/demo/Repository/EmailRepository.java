@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Repository;
 
 
 import com.example.demo.Model.Email;

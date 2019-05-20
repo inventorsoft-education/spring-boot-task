@@ -1,15 +1,13 @@
-package com.example.demo;
+package com.example.demo.Utils;
 
 
 import com.example.demo.Model.Email;
+import com.example.demo.ScheduledTask;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Component
 public class EmailSender {

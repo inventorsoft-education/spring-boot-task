@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Utils;
 
 
 import org.springframework.stereotype.Component;
@@ -23,7 +23,6 @@ public class Validator {
     }
 
     public boolean isEmailValid(String email) {
-        Date date = new Date();
         Matcher matcher = emailPattern .matcher(email);
         return matcher.find();
     }
@@ -42,6 +41,7 @@ public class Validator {
         try {
             date = dateFormat.parse(s);
         } catch (ParseException e) {
+            //date is not valid
         }
         return date;
     }
