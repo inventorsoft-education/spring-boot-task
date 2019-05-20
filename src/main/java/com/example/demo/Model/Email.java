@@ -85,13 +85,12 @@ public class Email{
         return Objects.equals(recipient, email.recipient) &&
                 Objects.equals(subject, email.subject) &&
                 Objects.equals(body, email.body) &&
-                Objects.equals(date, email.date) &&
-                Objects.equals(isSend, email.isSend);
+                Objects.equals(date, email.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(recipient, subject, body, date, isSend);
+        return Objects.hash(recipient, subject, body, date);
     }
 
 }

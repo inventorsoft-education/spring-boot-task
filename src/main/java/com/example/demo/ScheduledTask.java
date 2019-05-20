@@ -21,24 +21,20 @@ public class ScheduledTask {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     private EmailService emailService;
+    private EmailSender emailSender;
 
-    public ScheduledTask(EmailService emailService) {
+    public ScheduledTask(EmailService emailService, EmailSender emailSender) {
         this.emailService = emailService;
+        this.emailSender = emailSender;
     }
 
     @Scheduled(fixedRate = 2000)
     public void scheduleTaskWithFixedRate() {
-        //logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()) );
-
-        /*List<Email> list = new ArrayList<>();
-        Email email1 = new Email("a", "a", "a", new Date(), false);
-        Email email2 =new Email("b", "b", "b", new Date(), false);
-        Email email3 =new Email("c", "c", "c", new Date(), false);
-        Email email4 =new Email("d", "d", "d", new Date(), false);
-        emailService.add(email1);
-        emailService.add(email2);
-        emailService.add(email3);
-        emailService.add(email4);
-        emailService.getAllEmails().forEach(System.out::println);*/
+        List<Email> emails = emailService.getEmailsToSend();
+        for (Email e:emails){
+            Boolean isSend = emailSender.sendEmail(e);
+            e.setSend(isSend);
+            emailService.setSend(e);
+        }
     }
 }
