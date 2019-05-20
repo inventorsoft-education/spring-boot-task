@@ -3,6 +3,7 @@ package com.example.demo;
 
 import com.example.demo.Model.Email;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class EmailRepository {
     public List<Email> readEmailsFromFile()  {
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Email> result = null;
+        List<Email> result = new ArrayList<>();
         String json = null;
 
         try {
@@ -42,7 +44,7 @@ public class EmailRepository {
             Email[] myObjects = mapper.readValue(json, Email[].class);
             result = Arrays.asList(myObjects);
         } catch (IOException e) {
-            e.printStackTrace();
+            //file is empty or not present
         }
 
         return result;

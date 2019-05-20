@@ -30,6 +30,9 @@ public class EmailService {
     }
 
     public List<Email> getAllEmails(){
+        /*List<Email> emails = new ArrayList<>();
+        emails.addAll(emailRepository.readEmailsFromFile());
+        return emails;*/
         return emailRepository.readEmailsFromFile();
     }
 
