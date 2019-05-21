@@ -16,11 +16,8 @@ public class EmailService implements CommandLineRunner {
     @Autowired
     private EmailSender emailSender;
 
-    //@Autowired
-    //private ThreadPoolTaskScheduler threadPoolTaskScheduler;
-
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         emailFile.createEmail();
         emailSender.sendScheduledEmail();
     }

@@ -16,7 +16,6 @@ public class TaskScheduleConfig {
         threadPoolTaskScheduler.setThreadNamePrefix(
                 "ThreadPoolTaskScheduler");
         threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(true);
-        threadPoolTaskScheduler.shutdown();
         return threadPoolTaskScheduler;
     }
 }

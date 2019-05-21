@@ -21,43 +21,35 @@ public class EmailSender implements Runnable{
     @Autowired
     private TaskScheduler taskScheduler;
 
-    private SimpleMailMessage simpleMailMessage;
-
     @Value("${email.file}")
     private String file;
 
-
-
-    public  void send(){
-
-        simpleMailMessage = this.getEmail();
-        javaMailSender.send(simpleMailMessage);
-    }
 
     public SimpleMailMessage getEmail(){
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (SimpleMailMessage) ois.readObject();
         } catch (Exception ex) {
-            //TODO fixed return null
             return null;
         }
     }
 
 
     public void sendScheduledEmail() {
+
         SimpleMailMessage email = getEmail();
-
         taskScheduler.schedule(() -> run(), email.getSentDate().compareTo(new Date()) <= 0 ? new Date() : email.getSentDate());
-
-
-        //TODO clear Email file
     }
 
     @Override
     public void run() {
         SimpleMailMessage email = null;
         email = getEmail();
-        javaMailSender.send(email);
+        if(email != null){
+            javaMailSender.send(email);
+        }
+        else {
+        System.out.println("Sorry, email doesn't find!");
+        }
         System.exit(0);
     }
 }
