@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,8 @@ public class EmailRepository {
 
     private List<Email> emails;
 
-    public EmailRepository() {
+    @PostConstruct
+    private void loadEmails(){
         ObjectMapper mapper = new ObjectMapper();
         List<Email> result = new ArrayList<>();
         String json = null;
@@ -41,7 +43,7 @@ public class EmailRepository {
     }
 
     @PreDestroy
-    private void saveEmailsBeforeClosing() {
+    private void saveEmails() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(new File("emails.json"), emails );
