@@ -14,11 +14,10 @@ public class EmailSender {
 
     private JavaMailSender mailSender;
 
-    private static org.slf4j.Logger logger;
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(ScheduledTask.class);
 
     public EmailSender(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        logger = LoggerFactory.getLogger(ScheduledTask.class);
     }
 
     public Boolean sendEmail(Email email){
