@@ -1,7 +1,7 @@
 package com.example.demo.repo;
 
-import com.example.demo.exception.EmailException;
-import com.example.demo.exception.IntegerException;
+import com.example.demo.exception.EmailValidator;
+import com.example.demo.exception.IntegerValidator;
 
 import java.util.Scanner;
 
@@ -22,7 +22,7 @@ public class InputValue {
     public static String inputEmail() {
         System.out.println("Write email to :");
         String email = scanner.nextLine();
-        if ((EmailException.isValidEmailAddress(email))) {
+        if ((EmailValidator.isValidEmailAddress(email))) {
         } else {
             System.out.println("You are trying to enter the wrong email, please enter the email correctly ");
             inputEmail();
@@ -44,7 +44,7 @@ public class InputValue {
         System.out.println("How many seconds to send  : ");
         String strSec = scanner.nextLine();
         int intSec = 0;
-        if (IntegerException.tryParse(strSec)) {
+        if (IntegerValidator.tryParse(strSec)) {
             intSec = Integer.parseInt(strSec);
         } else {
             inputSecond();
@@ -54,6 +54,11 @@ public class InputValue {
 
     public static boolean resend() {
         System.out.println("Do you want send new message ? 'y' 'n'");
-        return scanner.nextLine().contains("y") ? true : false;
+        if (scanner.nextLine().contains("y")) {
+            return true;
+        } else {
+            scanner.close();
+            return false;
+        }
     }
 }

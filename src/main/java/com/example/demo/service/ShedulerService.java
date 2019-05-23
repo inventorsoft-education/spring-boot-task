@@ -19,19 +19,20 @@ public class ShedulerService {
     private Set<Message> messageListDoNotSend;
     private List<Message> messageLists;
     private Message message;
-    private MailSender messageService;
+    private MailSenderService messageService;
 
     @Autowired
-    public ShedulerService(JsonRepo jsonRepo, MailSender messageService) {
+    public ShedulerService(JsonRepo jsonRepo, MailSenderService messageService) {
         this.messageService = messageService;
         this.jsonRepo = jsonRepo;
         this.messageListDoNotSend = new LinkedHashSet<>();
-        this.messageLists = jsonRepo.loadFromJsonToList();
         this.message = new Message();
     }
 
     @Scheduled(fixedDelay = 1000)
     private void dataCheck() {
+        messageLists = jsonRepo.loadFromJsonToList();
+
         if (messageListDoNotSend.size() != 0) {
             sendMessageInFuture();
         }

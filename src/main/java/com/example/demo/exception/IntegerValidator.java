@@ -1,6 +1,6 @@
 package com.example.demo.exception;
 
-public class IntegerException {
+public class IntegerValidator {
     public static boolean tryParse(String text) {
         boolean result = true;
         try {

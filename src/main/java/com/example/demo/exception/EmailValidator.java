@@ -3,7 +3,7 @@ package com.example.demo.exception;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-public class EmailException {
+public class EmailValidator {
     public static boolean isValidEmailAddress(String email) {
         boolean result = true;
         try {

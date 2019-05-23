@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringBootConsoleApplication implements CommandLineRunner {
 
-    @Autowired
     private JsonRepo jsonRepo;
+
+    @Autowired
+    public SpringBootConsoleApplication(JsonRepo jsonRepo) {
+        this.jsonRepo = jsonRepo;
+    }
 
     @Override
     public void run(String... args) throws Exception {

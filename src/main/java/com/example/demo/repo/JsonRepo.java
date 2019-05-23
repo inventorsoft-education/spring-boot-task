@@ -9,6 +9,7 @@ import com.google.gson.stream.JsonReader;
 
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PreDestroy;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -45,7 +46,7 @@ public class JsonRepo {
 
         message.setId(messageLists.size());
         message.setMessage(InputValue.inputMessage());
-        message.setMessage(InputValue.inputEmail());
+        message.setEmailTo(InputValue.inputEmail());
         message.setSubject(InputValue.inputSubject());
         message.setFutureDate(InputValue.inputSecond());
         message.setStatus(Status.NOT_SENT);
@@ -71,5 +72,11 @@ public class JsonRepo {
         }
 
         return messageLists != null ? messageLists : new ArrayList<>();
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        System.out.println("Pre destroy method -----------------------------------------------");
+        updateListJson(messageLists);
     }
 }
