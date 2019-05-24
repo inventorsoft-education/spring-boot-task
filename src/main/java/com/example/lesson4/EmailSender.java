@@ -6,44 +6,38 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import org.springframework.mail.javamail.JavaMailSender;
-
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.Date;
 
 @Component
 public class EmailSender implements Runnable{
 
-    @Autowired
     private JavaMailSender javaMailSender;
-
-
-    @Autowired
     private TaskScheduler taskScheduler;
+    private EmailFile emailFile;
 
     @Value("${email.file}")
     private String file;
 
-
-    public SimpleMailMessage getEmail(){
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            return (SimpleMailMessage) ois.readObject();
-        } catch (Exception ex) {
-            return null;
-        }
+    @Autowired
+    public EmailSender(TaskScheduler taskScheduler, JavaMailSender javaMailSender, EmailFile emailFile){
+        this.javaMailSender = javaMailSender;
+        this.taskScheduler = taskScheduler;
+        this.emailFile = emailFile;
     }
 
 
     public void sendScheduledEmail() {
-
-        SimpleMailMessage email = getEmail();
+        SimpleMailMessage email = emailFile.getEmailFromFile();
+        if(email == null){
+            emailFile.createEmail();
+        }
         taskScheduler.schedule(() -> run(), email.getSentDate().compareTo(new Date()) <= 0 ? new Date() : email.getSentDate());
     }
 
     @Override
     public void run() {
         SimpleMailMessage email = null;
-        email = getEmail();
+        email = emailFile.getEmailFromFile();
         if(email != null){
             javaMailSender.send(email);
         }

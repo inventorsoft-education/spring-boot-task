@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailService implements CommandLineRunner {
 
-    @Autowired
-    private EmailFile emailFile;
+    private EmailSender emailSender;
 
     @Autowired
-    private EmailSender emailSender;
+    public EmailService(EmailSender emailSender){
+        this.emailSender = emailSender;
+    }
 
     @Override
     public void run(String... args){
-        emailFile.createEmail();
         emailSender.sendScheduledEmail();
     }
 }
