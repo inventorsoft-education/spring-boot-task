@@ -5,10 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import org.springframework.stereotype.Repository;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+
 
 
 @Repository
@@ -23,7 +25,6 @@ public class WorkWithJsonFile {
       this.gson=new GsonBuilder().setPrettyPrinting().create();
       this.emails=loadFromJsonEmailsList();
     }
-
 
     //load from json
     public ArrayList<Email> loadFromJsonEmailsList() {
@@ -53,7 +54,7 @@ public class WorkWithJsonFile {
     }
 
     public void saveEmailToJson(Email tmp){
-        if (tmp.getDelieveryDate()!=null) {
+        if (tmp.getDeliveryDate()!=null) {
             email = tmp;
             emails.add(email);
             updateList(emails);
@@ -61,5 +62,17 @@ public class WorkWithJsonFile {
 
     }
 
+    @PostConstruct
+    public void init(){
+        emails=loadFromJsonEmailsList();
+    }
 
+    @PreDestroy
+    public void destroy(){
+        this.updateList(emails);
+    }
+
+    public ArrayList<Email> getEmails() {
+        return emails;
+    }
 }
