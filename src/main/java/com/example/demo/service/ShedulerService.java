@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.DateValidation;
 import com.example.demo.model.Message;
 import com.example.demo.model.Status;
 import com.example.demo.repo.JsonRepo;
@@ -9,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 @EnableScheduling
@@ -18,7 +18,6 @@ public class ShedulerService {
     private JsonRepo jsonRepo;
     private Set<Message> messageListDoNotSend;
     private List<Message> messageLists;
-    private Message message;
     private MailSenderService messageService;
 
     @Autowired
@@ -26,43 +25,23 @@ public class ShedulerService {
         this.messageService = messageService;
         this.jsonRepo = jsonRepo;
         this.messageListDoNotSend = new LinkedHashSet<>();
-        this.message = new Message();
     }
 
     @Scheduled(fixedDelay = 1000)
     private void dataCheck() {
-        messageLists = jsonRepo.loadFromJsonToList();
+        messageLists = jsonRepo.loadMessagesDoNotSent();
 
-        if (messageListDoNotSend.size() != 0) {
-            sendMessageInFuture();
-        }
         if (messageLists.size() != 0) {
-            checkStatus();
+            sendMessageInFuture();
         }
     }
 
     private void sendMessageInFuture() {
-        Date currentDate = new Date();
-        Iterator iter = messageListDoNotSend.iterator();
-        while (iter.hasNext()) {
-            message = (Message) iter.next();
-            if (currentDate.getTime() >= message.getFutureDate()) {
-                iter.remove();
-                changeStatus((int) message.getId(), message);
+        for (Message message : messageLists) {
+            if (DateValidation.dateTransformer(message.getFutureSecond(), message.getCurrentTime())) {
+                jsonRepo.changeStatusById((int) message.getId(), message);
                 messageService.send(message);
             }
         }
-    }
-
-    private void checkStatus() {
-        messageListDoNotSend = messageLists.stream()
-                .filter(ml -> ml.getStatus().equals(Status.NOT_SENT))
-                .collect(Collectors.toSet());
-    }
-
-    private void changeStatus(int id, Message message) {
-        message.setStatus(Status.SENT);
-        messageLists.set(id, message);
-        jsonRepo.updateListJson(messageLists);
     }
 }

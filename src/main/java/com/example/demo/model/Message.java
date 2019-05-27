@@ -12,7 +12,9 @@ public class Message {
 
     private String message;
 
-    private long futureDate;
+    private long futureSecond;
+
+    private Date currentTime;
 
     private Status status;
 
@@ -27,8 +29,12 @@ public class Message {
         this.id = id;
     }
 
-    public void setFutureDate(long futureDate) {
-        this.futureDate = futureDate;
+    public void setFutureSecond(long futureSecond) {
+        this.futureSecond = futureSecond;
+    }
+
+    public long getFutureSecond() {
+        return futureSecond;
     }
 
     public String getSubject() {
@@ -55,21 +61,19 @@ public class Message {
         this.message = message;
     }
 
-    public long getFutureDate() {
-        return futureDate;
-    }
-
-    public void setFutureDate(int date) {
-        Date date1 = new Date();
-        long time = date1.getTime();
-        futureDate = (date * 1000) + time;
-    }
-
     public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Date getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(Date currentTime) {
+        this.currentTime = currentTime;
     }
 }
