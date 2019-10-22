@@ -11,6 +11,10 @@ public class Letter implements Serializable {
 
     @Getter
     @Setter
+    private Long id;
+
+    @Getter
+    @Setter
     private String recipient;
 
     @Getter
@@ -26,21 +30,12 @@ public class Letter implements Serializable {
     private LocalDateTime deliveryTime;
 
     @Override
-    public String toString() {
-        return "Letter{" +
-                "recipient='" + recipient + '\'' +
-                ", subject='" + subject + '\'' +
-                ", body='" + body + '\'' +
-                ", deliveryTime=" + deliveryTime +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Letter)) return false;
         Letter letter = (Letter) o;
-        return Objects.equals(getRecipient(), letter.getRecipient()) &&
+        return Objects.equals(getId(), letter.getId()) &&
+                Objects.equals(getRecipient(), letter.getRecipient()) &&
                 Objects.equals(getSubject(), letter.getSubject()) &&
                 Objects.equals(getBody(), letter.getBody()) &&
                 Objects.equals(getDeliveryTime(), letter.getDeliveryTime());
@@ -48,6 +43,17 @@ public class Letter implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRecipient(), getSubject(), getBody(), getDeliveryTime());
+        return Objects.hash(getId(), getRecipient(), getSubject(), getBody(), getDeliveryTime());
+    }
+
+    @Override
+    public String toString() {
+        return "Letter{" +
+                "id=" + id +
+                ", recipient='" + recipient + '\'' +
+                ", subject='" + subject + '\'' +
+                ", body='" + body + '\'' +
+                ", deliveryTime=" + deliveryTime +
+                '}';
     }
 }

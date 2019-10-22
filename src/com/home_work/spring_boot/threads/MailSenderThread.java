@@ -1,18 +1,20 @@
 package com.home_work.spring_boot.threads;
 
+import com.home_work.spring_boot.entity.Letter;
 import com.home_work.spring_boot.services.MailService;
-import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
 
-@Component
-public class MailSenderThread extends Thread {
+public class MailSenderThread implements Runnable {
 
     private MailService mailService;
 
-    public MailSenderThread(MailService mailService) {
+    private Letter letter;
+
+    public MailSenderThread(Letter letter, MailService mailService) {
+        this.letter = letter;
         this.mailService = mailService;
     }
 
@@ -21,10 +23,10 @@ public class MailSenderThread extends Thread {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                mailService.sendMail();
+                mailService.sendMail(letter);
             }
         };
         Timer timer = new Timer();
-        timer.schedule(timerTask, Timestamp.valueOf(mailService.getMail().getDeliveryTime()));
+        timer.schedule(timerTask, Timestamp.valueOf(letter.getDeliveryTime()));
     }
 }
