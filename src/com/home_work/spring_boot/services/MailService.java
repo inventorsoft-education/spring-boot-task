@@ -15,6 +15,9 @@ public class MailService {
 
     private JavaMailSender javaMailSender;
     private MailDao mailDao;
+    private static final String MAILS_TO_SEND = "fileNameToSend";
+    private static final String SENT_MAILS = "fileNameOfSent";
+
 
     @Autowired
     public MailService(JavaMailSender javaMailSender, MailDao mailDao) {
@@ -32,10 +35,15 @@ public class MailService {
     }
 
     public void saveMail(Letter letter) {
-        mailDao.saveMail(letter);
+        mailDao.saveMail(letter, MAILS_TO_SEND);
     }
 
-    public List<Letter> getMails() {
-        return mailDao.getMails();
+    public List<Letter> getMailsToSend() {
+        return mailDao.getMails(MAILS_TO_SEND);
     }
+
+    public List<Letter> getSentMails() {
+        return mailDao.getMails(SENT_MAILS);
+    }
+
 }

@@ -16,7 +16,9 @@ public class PropertiesService {
     public static final String MAIL_HOST = "host";
     public static final String MAIL_PORT = "port";
     public static final String PATH = "path";
-    public static final String FILE_NAME = "fileName";
+    public static final String FILE_NAME_TO_SEND = "fileNameToSend";
+    public static final String FILE_NAME_OF_SENT = "fileNameOfSent";
+
 
     private Properties openProperties(String path) {
 
@@ -38,7 +40,7 @@ public class PropertiesService {
 
     @Bean
     public Properties getProperties() {
-        return openProperties("/application.properties");
+        return openProperties("/resources/application.properties");
     }
 
     public Map<String, String> getMailProperties() {
@@ -60,7 +62,8 @@ public class PropertiesService {
         Map<String, String> fileProperties = new HashMap<>();
 
         fileProperties.put(PATH, properties.getProperty("file.path"));
-        fileProperties.put(FILE_NAME, properties.getProperty("file.fileName"));
+        fileProperties.put(FILE_NAME_TO_SEND, properties.getProperty("file.fileNameToSend"));
+        fileProperties.put(FILE_NAME_OF_SENT, properties.getProperty("file.fileNameOfSent"));
         return fileProperties;
     }
 }

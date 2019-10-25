@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -37,5 +39,9 @@ public class MailSenderConfig {
         props.put("mail.debug", "true");
 
         return mailSender;
+    }
+    @Bean
+    public Validator validator() {
+        return Validation.buildDefaultValidatorFactory().getValidator();
     }
 }

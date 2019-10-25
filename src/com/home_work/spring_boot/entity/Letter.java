@@ -1,8 +1,12 @@
 package com.home_work.spring_boot.entity;
 
+import com.home_work.spring_boot.annotations.Reachable;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -15,18 +19,26 @@ public class Letter implements Serializable {
 
     @Getter
     @Setter
+    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")
+    @NotBlank
     private String recipient;
 
     @Getter
     @Setter
+    @NotBlank
+    @Length(min = 3, max = 128)
     private String subject;
 
     @Getter
     @Setter
+    @NotBlank
+    @Length(min = 3, max = 128)
     private String body;
 
     @Getter
     @Setter
+    @Reachable
+    @NotBlank
     private LocalDateTime deliveryTime;
 
     @Override
