@@ -32,6 +32,7 @@ public class MailService {
         msg.setText(letter.getBody());
         msg.setSentDate(Timestamp.valueOf(letter.getDeliveryTime()));
         javaMailSender.send(msg);
+        mailDao.removeSentMail(letter);
     }
 
     public void saveMail(Letter letter) {
