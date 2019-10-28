@@ -1,23 +1,21 @@
 package com.academy.task.service;
 
 import com.academy.task.model.Email;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class EmailSender {
 
-    private EmailSenderService emailSenderService;
+    EmailSenderService emailSenderService;
 
-    private EmailService emailService;
-
-    @Autowired
-    public EmailSender(EmailSenderService emailSenderService, EmailService emailService) {
-        this.emailSenderService = emailSenderService;
-        this.emailService = emailService;
-    }
+    EmailService emailService;
 
     @Scheduled(fixedRate = 60000)
     public void deliverEmails() {

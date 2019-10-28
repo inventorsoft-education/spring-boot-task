@@ -1,23 +1,21 @@
 package com.academy.task.service;
 
 import com.academy.task.model.Email;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class EmailSenderService {
 
-    private JavaMailSender mailSender;
+    JavaMailSender mailSender;
 
-    private EmailService emailService;
-
-    @Autowired
-    public EmailSenderService(JavaMailSender mailSender, EmailService emailService) {
-        this.mailSender = mailSender;
-        this.emailService = emailService;
-    }
+    EmailService emailService;
 
     public void sendEmail(Email email) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -26,7 +24,7 @@ public class EmailSenderService {
         message.setSubject(email.getSubject());
         message.setText(email.getBody());
 
-        this.mailSender.send(message);
+        mailSender.send(message);
 
         emailService.deleteEmail(email.getId());
     }

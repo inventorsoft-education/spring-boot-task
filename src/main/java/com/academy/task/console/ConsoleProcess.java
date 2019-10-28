@@ -25,10 +25,10 @@ public class ConsoleProcess implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Input();
+        input();
     }
 
-    private void Input() throws IOException {
+    private void input() throws IOException {
         System.out.println("Hi! Let's send something email!");
 
         Email email = new Email();

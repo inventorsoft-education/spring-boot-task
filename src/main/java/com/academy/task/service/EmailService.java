@@ -2,7 +2,9 @@ package com.academy.task.service;
 
 import com.academy.task.model.Email;
 import com.academy.task.repository.EmailRepository;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
@@ -10,9 +12,10 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class EmailService {
 
-    private EmailRepository emailRepository;
+    EmailRepository emailRepository;
 
     public void addEmail(Email email) {
         emailRepository.add(email);

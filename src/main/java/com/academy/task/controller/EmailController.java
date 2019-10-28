@@ -1,9 +1,10 @@
 package com.academy.task.controller;
 
 import com.academy.task.model.Email;
-import com.academy.task.response.ApiResponse;
 import com.academy.task.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +19,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/emails/")
+@AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class EmailController {
 
-    private EmailService emailService;
-
-    @Autowired
-    public EmailController(EmailService emailService) {
-        this.emailService = emailService;
-    }
+    EmailService emailService;
 
     @GetMapping
     public ResponseEntity<List<Email>> findAllEmails() {
@@ -38,17 +36,17 @@ public class EmailController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createEmail(@Valid @RequestBody Email email) {
+    public ResponseEntity<String> createEmail(@Valid @RequestBody Email email) {
         emailService.addEmail(email);
 
-        return ResponseEntity.ok().body(new ApiResponse(true, "Email created successfully and will be sent at " + email.getDate().toLocalTime()));
+        return ResponseEntity.ok().body("Email created successfully and will be sent at " + email.getDate().toLocalTime());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateEmail(@PathVariable("id") Long id, @Valid @RequestBody Email email) {
+    public ResponseEntity<String> updateEmail(@PathVariable("id") Long id, @Valid @RequestBody Email email) {
         emailService.updateEmail(id, email);
 
-        return ResponseEntity.ok().body(new ApiResponse(true, "Email updated successfully"));
+        return ResponseEntity.ok().body( "Email updated successfully");
     }
 
     @DeleteMapping("/{id}")

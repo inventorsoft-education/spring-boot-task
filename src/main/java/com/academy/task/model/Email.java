@@ -1,23 +1,24 @@
 package com.academy.task.model;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Email {
 
-    private Long id;
+    Long id;
 
-    private String recipient;
+    String recipient;
 
-    private String subject;
+    String subject;
 
-    private String body;
+    String body;
 
-    private LocalDateTime date;
+    LocalDateTime date;
 
 }
