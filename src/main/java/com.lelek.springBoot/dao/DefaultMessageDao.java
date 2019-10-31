@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lelek.springBoot.ConsoleApplication;
+import com.lelek.springBoot.WebApplication;
 import com.lelek.springBoot.model.MySimpleMailMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ public class DefaultMessageDao implements MessageDao {
     @Override
     public List<MySimpleMailMessage> getMessages() {
         try {
-            if (!(new Scanner(ConsoleApplication.FILE).hasNext())) {
+            if (!(new Scanner(WebApplication.FILE).hasNext())) {
                 return new ArrayList<>();
             } else {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -29,7 +29,7 @@ public class DefaultMessageDao implements MessageDao {
                 objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
                 List<MySimpleMailMessage> mailMessageList;
                 mailMessageList = objectMapper
-                        .readValue(ConsoleApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
+                        .readValue(WebApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
                         });
                 return mailMessageList;
             }
@@ -49,25 +49,25 @@ public class DefaultMessageDao implements MessageDao {
             List<MySimpleMailMessage> messageList = new ArrayList<>();
             if (mySimpleMailMessage.getId() != 1) {
                 messageList = objectMapper
-                        .readValue(ConsoleApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
+                        .readValue(WebApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
                         });
             }
             messageList.add(mySimpleMailMessage);
-            objectMapper.writeValue(ConsoleApplication.FILE, messageList);
+            objectMapper.writeValue(WebApplication.FILE, messageList);
         } catch (IOException e) {
             log.info("Exception " + e);
         }
     }
 
     private static int generateId() throws IOException {
-        if (!(new Scanner(ConsoleApplication.FILE).hasNext())) {
+        if (!(new Scanner(WebApplication.FILE).hasNext())) {
             return 1;
         } else {
             List<MySimpleMailMessage> mailMessageList;
             mailMessageList = new ObjectMapper()
                     .configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
                     .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                    .readValue(ConsoleApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
+                    .readValue(WebApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
                     });
             return mailMessageList.size() + 1;
         }

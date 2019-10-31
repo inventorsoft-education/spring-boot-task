@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MessageService {
 
-    List<MySimpleMailMessage> getMessages();
+    List<MessageDto> getMessages();
 
     void saveMessage(MessageDto messageDto);
 

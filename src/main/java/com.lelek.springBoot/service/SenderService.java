@@ -1,7 +1,7 @@
 package com.lelek.springBoot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lelek.springBoot.ConsoleApplication;
+import com.lelek.springBoot.WebApplication;
 import com.lelek.springBoot.dao.MessageDao;
 import com.lelek.springBoot.model.MySimpleMailMessage;
 import lombok.Setter;
@@ -37,13 +37,14 @@ public class SenderService extends Thread {
                 }
             }
         }
-        new ObjectMapper().writeValue(ConsoleApplication.FILE, allMessages);
+        new ObjectMapper().writeValue(WebApplication.FILE, allMessages);
     }
 
     @Override
     public void run() {
         while (!stop) {
             try {
+                log.info("5 seconds past");
                 send();
                 Thread.sleep(5000);
             } catch (InterruptedException | IOException e) {

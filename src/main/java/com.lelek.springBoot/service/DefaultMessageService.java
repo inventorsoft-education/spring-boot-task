@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,8 +22,10 @@ public class DefaultMessageService implements MessageService{
     @Autowired
     private MySimpleMailMessage mySimpleMailMessage;
 
-    public List<MySimpleMailMessage> getMessages() {
-        return messageDao.getMessages();
+    public List<MessageDto> getMessages() {
+        return messageDao.getMessages().stream()
+        .map(MySimpleMailMessage::mapToDto)
+                .collect(Collectors.toList());
     }
 
     public void saveMessage(MessageDto messageDto){
