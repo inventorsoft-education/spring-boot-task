@@ -43,9 +43,7 @@ public class DefaultMessageDao implements MessageDao {
     @Override
     public void saveMessage(MySimpleMailMessage mySimpleMailMessage) {
         try {
-            if (mySimpleMailMessage.getId() == 0) {
-                mySimpleMailMessage.setId(generateId());
-            }
+            mySimpleMailMessage.setId(generateId());
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
                     .setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -85,7 +83,18 @@ public class DefaultMessageDao implements MessageDao {
     @Override
     public void updateMessage(long id, MySimpleMailMessage updates) {
         removeMessage(id);
-        saveMessage(updates);
+        try {
+            updates.setId(id);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
+                    .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            List<MySimpleMailMessage> messageList = objectMapper
+                    .readValue(WebApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {});
+            messageList.add(updates);
+            objectMapper.writeValue(WebApplication.FILE, messageList);
+        } catch (IOException e) {
+            log.info("Exception " + e);
+        }
     }
 
     private static long generateId() throws IOException {

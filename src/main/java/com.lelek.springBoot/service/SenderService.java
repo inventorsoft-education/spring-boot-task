@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lelek.springBoot.WebApplication;
 import com.lelek.springBoot.dao.MessageDao;
 import com.lelek.springBoot.model.MySimpleMailMessage;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,13 @@ import java.util.Objects;
 @Slf4j
 @Setter
 @Service
+@AllArgsConstructor
 public class SenderService extends Thread {
 
-    private boolean stop = false;
+    private static boolean stop = false;
 
-    @Autowired
     private JavaMailSender javaMailSender;
 
-    @Autowired
     private MessageDao messageDao;
 
     private void send() throws IOException {
