@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MessageDto {
-    private int id;
+    private long id;
     private boolean sent;
     private String to;
     private String subject;

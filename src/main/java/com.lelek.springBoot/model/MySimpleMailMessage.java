@@ -16,18 +16,7 @@ import java.util.Objects;
 @Component
 public class MySimpleMailMessage extends SimpleMailMessage {
 
-    private boolean sent;
-    private int id;
-
-    public MessageDto mapToDto(){
-        return MessageDto.builder()
-                .id(this.getId())
-                .sent(this.isSent())
-                .to(Arrays.toString(this.getTo()))
-                .subject(this.getSubject())
-                .text(this.getText())
-                .date(Objects.requireNonNull(this.getSentDate()).toString())
-                .build();
-    }
+    private boolean sent = false;
+    private long id = 0;
 
 }

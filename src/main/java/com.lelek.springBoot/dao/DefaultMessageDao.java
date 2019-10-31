@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Repository
@@ -42,7 +43,9 @@ public class DefaultMessageDao implements MessageDao {
     @Override
     public void saveMessage(MySimpleMailMessage mySimpleMailMessage) {
         try {
-            mySimpleMailMessage.setId(generateId());
+            if (mySimpleMailMessage.getId() == 0) {
+                mySimpleMailMessage.setId(generateId());
+            }
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
                     .setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -59,9 +62,35 @@ public class DefaultMessageDao implements MessageDao {
         }
     }
 
-    private static int generateId() throws IOException {
+    @Override
+    public MySimpleMailMessage getMessage(long id) {
+        return getMessages().stream()
+                .filter(message -> message.getId() == id)
+                .findAny()
+                .orElse(new MySimpleMailMessage());
+    }
+
+    @Override
+    public void removeMessage(long id) {
+        List<MySimpleMailMessage> filteredList = getMessages().stream()
+                .filter(message -> message.getId() != id)
+                .collect(Collectors.toList());
+        try {
+            new ObjectMapper().writeValue(WebApplication.FILE, filteredList);
+        } catch (IOException e) {
+            log.info("Exception " + e);
+        }
+    }
+
+    @Override
+    public void updateMessage(long id, MySimpleMailMessage updates) {
+        removeMessage(id);
+        saveMessage(updates);
+    }
+
+    private static long generateId() throws IOException {
         if (!(new Scanner(WebApplication.FILE).hasNext())) {
-            return 1;
+            return 1L;
         } else {
             List<MySimpleMailMessage> mailMessageList;
             mailMessageList = new ObjectMapper()
