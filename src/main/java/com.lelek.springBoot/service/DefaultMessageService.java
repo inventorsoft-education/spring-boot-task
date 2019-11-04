@@ -3,8 +3,8 @@ package com.lelek.springBoot.service;
 import com.lelek.springBoot.dao.MessageDao;
 import com.lelek.springBoot.dto.MessageDto;
 import com.lelek.springBoot.model.MySimpleMailMessage;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -12,13 +12,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class DefaultMessageService implements MessageService{
 
-    @Autowired
     private MessageDao messageDao;
 
-    @Autowired
     private MySimpleMailMessage mySimpleMailMessage;
 
     public List<MySimpleMailMessage> getMessages() {

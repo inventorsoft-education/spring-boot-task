@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Setter
@@ -28,16 +29,15 @@ public class SenderService extends Thread {
     private MessageDao messageDao;
 
     private void send() throws IOException {
-        List<MySimpleMailMessage> allMessages = messageDao.getMessages();
-        for (MySimpleMailMessage message : allMessages) {
-            if (!message.isSent()) {
-                if (Objects.requireNonNull(message.getSentDate()).getTime() <= System.currentTimeMillis()) {
-                    javaMailSender.send(message);
-                    message.setSent(true);
-                }
-            }
+        List<MySimpleMailMessage> messagesToSend = messageDao.getMessages().stream()
+                .filter(message -> !message.isSent())
+                .filter(message -> Objects.requireNonNull(message.getSentDate()).getTime() <= System.currentTimeMillis())
+                .collect(Collectors.toList());
+        for (MySimpleMailMessage message : messagesToSend) {
+            javaMailSender.send(message);
+            message.setSent(true);
         }
-        new ObjectMapper().writeValue(ConsoleApplication.FILE, allMessages);
+        new ObjectMapper().writeValue(ConsoleApplication.FILE, messagesToSend);
     }
 
     @Override

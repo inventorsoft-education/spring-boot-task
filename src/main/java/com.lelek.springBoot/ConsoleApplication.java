@@ -2,8 +2,8 @@ package com.lelek.springBoot;
 
 import com.lelek.springBoot.service.ConsoleMessageService;
 import com.lelek.springBoot.service.SenderService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,15 +11,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.File;
 
 @Slf4j
+@AllArgsConstructor
 @SpringBootApplication
 public class ConsoleApplication implements CommandLineRunner {
 
     public static final File FILE = new File("src/main/resources/data_base.json");
 
-    @Autowired
     private SenderService senderService;
 
-    @Autowired
     private ConsoleMessageService consoleMessageService;
 
     public static void main(String[] args) {

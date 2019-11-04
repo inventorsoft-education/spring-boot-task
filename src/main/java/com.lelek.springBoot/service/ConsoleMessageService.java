@@ -1,8 +1,8 @@
 package com.lelek.springBoot.service;
 
 import com.lelek.springBoot.dto.MessageDto;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class ConsoleMessageService {
 
@@ -17,10 +18,8 @@ public class ConsoleMessageService {
     private static final String QUITE = "Q";
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    @Autowired
     private MessageDto messageDto;
 
-    @Autowired
     private MessageService messageService;
 
     public boolean startConsoleMessaging() {
