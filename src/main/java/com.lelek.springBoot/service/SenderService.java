@@ -7,18 +7,18 @@ import com.lelek.springBoot.model.MySimpleMailMessage;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Setter
-@Service
 @AllArgsConstructor
+@Service
 public class SenderService extends Thread {
 
     private static boolean stop = false;
@@ -28,16 +28,15 @@ public class SenderService extends Thread {
     private MessageDao messageDao;
 
     private void send() throws IOException {
-        List<MySimpleMailMessage> allMessages = messageDao.getMessages();
-        for (MySimpleMailMessage message : allMessages) {
-            if (!message.isSent()) {
-                if (Objects.requireNonNull(message.getSentDate()).getTime() <= System.currentTimeMillis()) {
-                    javaMailSender.send(message);
-                    message.setSent(true);
-                }
-            }
+        List<MySimpleMailMessage> messagesToSend = messageDao.getMessages().stream()
+                .filter(message -> !message.isSent())
+                .filter(message -> Objects.requireNonNull(message.getSentDate()).getTime() <= System.currentTimeMillis())
+                .collect(Collectors.toList());
+        for (MySimpleMailMessage message : messagesToSend) {
+            javaMailSender.send(message);
+            message.setSent(true);
         }
-        new ObjectMapper().writeValue(WebApplication.FILE, allMessages);
+        new ObjectMapper().writeValue(WebApplication.FILE, messagesToSend);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class SenderService extends Thread {
                 send();
                 Thread.sleep(5000);
             } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
+                log.error("error" + e);
             }
         }
     }

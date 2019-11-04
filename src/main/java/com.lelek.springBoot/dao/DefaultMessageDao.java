@@ -89,7 +89,8 @@ public class DefaultMessageDao implements MessageDao {
             objectMapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
                     .setSerializationInclusion(JsonInclude.Include.NON_NULL);
             List<MySimpleMailMessage> messageList = objectMapper
-                    .readValue(WebApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {});
+                    .readValue(WebApplication.FILE, new TypeReference<List<MySimpleMailMessage>>() {
+                    });
             messageList.add(updates);
             objectMapper.writeValue(WebApplication.FILE, messageList);
         } catch (IOException e) {

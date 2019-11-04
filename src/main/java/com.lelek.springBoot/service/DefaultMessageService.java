@@ -3,6 +3,7 @@ package com.lelek.springBoot.service;
 import com.lelek.springBoot.dao.MessageDao;
 import com.lelek.springBoot.dto.MessageDto;
 import com.lelek.springBoot.model.MySimpleMailMessage;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class DefaultMessageService implements MessageService {
 
-    @Autowired
     private MessageDao messageDao;
 
-    @Autowired
     private MySimpleMailMessage mySimpleMailMessage;
 
     public List<MessageDto> getMessages() {
@@ -58,7 +58,7 @@ public class DefaultMessageService implements MessageService {
         try {
             mySimpleMailMessage.setSentDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(messageDto.getDate()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("error" + e);
         }
         mySimpleMailMessage.setSent(messageDto.isSent());
         return mySimpleMailMessage;
