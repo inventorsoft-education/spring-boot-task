@@ -47,7 +47,7 @@ public class SenderService extends Thread {
                 send();
                 Thread.sleep(5000);
             } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
+                log.error("error" + e);
             }
         }
     }

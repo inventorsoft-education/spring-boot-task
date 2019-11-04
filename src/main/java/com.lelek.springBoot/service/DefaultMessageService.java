@@ -33,7 +33,7 @@ public class DefaultMessageService implements MessageService{
         try {
             mySimpleMailMessage.setSentDate(new SimpleDateFormat("dd.MM.yyyy HH:mm").parse(messageDto.getDate()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("error" + e);
         }
         mySimpleMailMessage.setSent(false);
         messageDao.saveMessage(mySimpleMailMessage);

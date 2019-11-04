@@ -2,6 +2,7 @@ package com.lelek.springBoot.service;
 
 import com.lelek.springBoot.dto.MessageDto;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 
 @Slf4j
 @AllArgsConstructor
+@NoArgsConstructor
 @Service
 public class ConsoleMessageService {
 
