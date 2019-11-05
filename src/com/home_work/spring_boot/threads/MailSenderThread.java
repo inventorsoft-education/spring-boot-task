@@ -13,9 +13,9 @@ public class MailSenderThread implements Runnable {
 
     private Letter letter;
 
-    public MailSenderThread(Letter letter, MailService mailService) {
-        this.letter = letter;
+    public MailSenderThread(MailService mailService, Letter letter) {
         this.mailService = mailService;
+        this.letter = letter;
     }
 
     @Override

@@ -5,40 +5,34 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class Letter implements Serializable {
 
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
-    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$")
+    @Email
     @NotBlank
     private String recipient;
 
-    @Getter
-    @Setter
     @NotBlank
     @Length(min = 3, max = 128)
     private String subject;
 
-    @Getter
-    @Setter
     @NotBlank
     @Length(min = 3, max = 128)
     private String body;
 
-    @Getter
-    @Setter
     @Reachable
-    @NotBlank
+    @NotNull
     private LocalDateTime deliveryTime;
 
     @Override

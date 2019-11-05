@@ -11,6 +11,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Configuration
 public class MailSenderConfig {
@@ -43,5 +45,10 @@ public class MailSenderConfig {
     @Bean
     public Validator validator() {
         return Validation.buildDefaultValidatorFactory().getValidator();
+    }
+
+    @Bean
+    public ExecutorService executorService(){
+        return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 }
