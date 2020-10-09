@@ -8,5 +8,4 @@ public class EmailDeliveryApplication {
     public static void main(String[] args) {
         SpringApplication.run(EmailDeliveryApplication.class, args);
     }
-
 }
