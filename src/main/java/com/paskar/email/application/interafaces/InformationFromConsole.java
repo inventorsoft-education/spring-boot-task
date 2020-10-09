@@ -1,6 +1,8 @@
 package com.paskar.email.application.interafaces;
 
 
+import lombok.Getter;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,22 +13,31 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ConsoleInterface {
-    private List<Email> listWithAllEmails;
+public class InformationFromConsole {
+
+   @Getter
+   private static List<Email> listWithAllEmails;
+
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("MM dd yyyy HH:mm");
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
-    public boolean createNewEmail() throws IOException {
+
+    public static void main(String[] args) throws IOException {
+        createNewEmail();
+    }
+
+
+    public static void createNewEmail() throws IOException {
         String recipient = recipientValidation();
         String subject = emailSubject();
         String body = bodyValidation();
         LocalDateTime date = dateValidation();
-        return listWithAllEmails.add(new Email(recipient, subject, body, date));
+        listWithAllEmails.add(new Email(recipient, subject, body, date));
     }
 
 
-    public String recipientValidation() throws IOException {
+    public static String recipientValidation() throws IOException {
         String emailRegEx = "^([\\w-.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
         System.out.println("Enter the recipient's email address \nFor example: \"YourExample@gmail.com\"");
         while (true) {
@@ -41,12 +52,12 @@ public class ConsoleInterface {
         }
     }
 
-    public String emailSubject() throws IOException {
+    public static String emailSubject() throws IOException {
         System.out.println("Enter the subject of your email");
         return READER.readLine();
     }
 
-    public String bodyValidation() throws IOException {
+    public static String bodyValidation() throws IOException {
         StringBuilder builder = new StringBuilder();
         System.out.println("Please enter your message\n" +
                 "When you have finished writing your message, please press the ENTER once and type the word \"Exit\"");
@@ -59,7 +70,7 @@ public class ConsoleInterface {
         } while (true);
     }
 
-    public LocalDateTime dateValidation() throws IOException {
+    public static LocalDateTime dateValidation() throws IOException {
         LocalDateTime time = null;
         System.out.println("Pay attention to a date template, date has to be entered only in this format\n" +
                 "month day year hours:minutes - for example - 09 12 2020 20:56\n" +
