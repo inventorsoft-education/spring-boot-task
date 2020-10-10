@@ -1,4 +1,4 @@
-package com.paskar.email.application.interafaces;
+package com.paskar.email.application.console;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

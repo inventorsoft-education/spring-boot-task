@@ -1,7 +1,7 @@
 package com.paskar.email.application.service;
 
 
-import com.paskar.email.application.interafaces.Email;
+import com.paskar.email.application.console.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;

@@ -1,4 +1,4 @@
-package com.paskar.email.application.interafaces;
+package com.paskar.email.application.console;
 
 
 import lombok.Getter;
@@ -23,7 +23,6 @@ public class InformationFromConsole implements Serializable {
 
 
     public static void main(String[] args) throws IOException {
-        System.out.println("How many letters do you want to send? (enter a number)");
         InformationFromConsole console = new InformationFromConsole();
 
         int numberOfLetters = numberOfLettersValidation();
@@ -99,6 +98,7 @@ public class InformationFromConsole implements Serializable {
     }
 
     public static int numberOfLettersValidation() throws IOException {
+        System.out.println("How many letters do you want to send? (enter a number)");
         int numberOfLetters = 0;
         int count = 0;
         do {
