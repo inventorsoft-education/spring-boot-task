@@ -17,6 +17,8 @@ public class InformationFromConsole implements Serializable {
     @Getter
     private List<Email> listWithAllEmails = new ArrayList<>();
 
+    private static final long serialVersionUID = 1L;
+
     private transient static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("MM dd yyyy HH:mm");
     private transient static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
