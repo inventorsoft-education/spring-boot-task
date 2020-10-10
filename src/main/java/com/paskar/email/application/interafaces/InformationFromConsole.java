@@ -3,37 +3,46 @@ package com.paskar.email.application.interafaces;
 
 import lombok.Getter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InformationFromConsole {
+public class InformationFromConsole implements Serializable {
 
-   @Getter
-   private static List<Email> listWithAllEmails;
+    @Getter
+    private List<Email> listWithAllEmails = new ArrayList<>();
 
-    private static final DateTimeFormatter FORMATTER =
+    private transient static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("MM dd yyyy HH:mm");
-    private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
+    private transient static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
 
     public static void main(String[] args) throws IOException {
-        createNewEmail();
+        System.out.println("How many letters do you want to send? (enter a number)");
+        InformationFromConsole console = new InformationFromConsole();
+
+        int numberOfLetters = numberOfLettersValidation();
+
+        for (int i = 0; i < numberOfLetters; i++) {
+            console.getListWithAllEmails().add(createNewEmail());
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("emailList.bin"))) {
+            oos.writeObject(console.getListWithAllEmails());
+        }
     }
 
-
-    public static void createNewEmail() throws IOException {
+    public static Email createNewEmail() throws IOException {
         String recipient = recipientValidation();
         String subject = emailSubject();
         String body = bodyValidation();
         LocalDateTime date = dateValidation();
-        listWithAllEmails.add(new Email(recipient, subject, body, date));
+        return new Email(recipient, subject, body, date);
     }
 
 
@@ -87,5 +96,20 @@ public class InformationFromConsole {
         } while (count != 0);
 
         return time;
+    }
+
+    public static int numberOfLettersValidation() throws IOException {
+        int numberOfLetters = 0;
+        int count = 0;
+        do {
+            try {
+                count = 0;
+                 numberOfLetters = Integer.parseInt(READER.readLine());
+            } catch (NumberFormatException e) {
+                count++;
+                System.err.println("You have entered an unknown character, use only digits");
+            }
+        } while (count != 0);
+        return numberOfLetters;
     }
 }
