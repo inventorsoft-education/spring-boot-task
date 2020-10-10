@@ -25,30 +25,26 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 60000) //1 min
     public void sendSimpleEmail() throws MailException, IOException, ClassNotFoundException {
 
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("emailList.bin")))
-        {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("emailList.bin"))) {
             List<Email> emailList = (List<Email>) ois.readObject();
 
             for (int i = 0; i < emailList.size(); i++) {
                 LocalDateTime localDateTime = LocalDateTime.now();
-                if (localDateTime.equals(emailList.get(i).getDate())) {
-                    SimpleMailMessage message = new SimpleMailMessage();
+                  if (localDateTime.equals(emailList.get(i).getDate())) {
+                SimpleMailMessage message = new SimpleMailMessage();
 
-                    message.setTo(emailList.get(i).getRecipient());
-                    message.setFrom("Olexandr@gmai.com");//just an example
-                    message.setSubject(emailList.get(i).getSubject());
-                    message.setText(emailList.get(i).getSubject());
+                message.setTo(emailList.get(i).getRecipient());
+                message.setSubject(emailList.get(i).getSubject());
+                message.setText(emailList.get(i).getSubject());
 
-                    this.emailSender.send(message);
+                System.out.println(emailList.get(i).toString());
+                this.emailSender.send(message);
 
-                    emailList.remove(i);
-                }
+                 }
             }
         }
-
-
     }
 }
