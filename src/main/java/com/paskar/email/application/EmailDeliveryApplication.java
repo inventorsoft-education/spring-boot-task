@@ -1,10 +1,7 @@
 package com.paskar.email.application;
 
 import com.paskar.email.application.console.Email;
-import com.paskar.email.application.console.InformationFromConsole;
 import com.paskar.email.application.repositiory.CreateAndSaveEmail;
-import com.paskar.email.application.repositiory.FindEmail;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.paskar.email.application.console.InformationFromConsole.*;
+import static com.paskar.email.application.console.InformationFromConsole.numberOfLettersValidation;
 
 @SpringBootApplication
 @EnableScheduling
