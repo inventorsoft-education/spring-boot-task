@@ -1,7 +1,10 @@
 package com.paskar.email.application.console;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paskar.email.application.repositiory.CreateAndSaveEmail;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -12,30 +15,23 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InformationFromConsole implements Serializable {
+@Component
+public class InformationFromConsole {
 
     @Getter
     private List<Email> listWithAllEmails = new ArrayList<>();
 
-    private static final long serialVersionUID = 1L;
+    private final static String baseFile = "emailList.json";
 
-    private transient static final DateTimeFormatter FORMATTER =
+    private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("MM dd yyyy HH:mm");
-    private transient static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
+
+    private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
 
-    public static void main(String[] args) throws IOException {
-        InformationFromConsole console = new InformationFromConsole();
-
-        int numberOfLetters = numberOfLettersValidation();
-
-        for (int i = 0; i < numberOfLetters; i++) {
-            console.getListWithAllEmails().add(createNewEmail());
-        }
-
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("emailList.bin"))) {
-            oos.writeObject(console.getListWithAllEmails());
-        }
+    public static void save(List<Email> email) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(new File(baseFile), email);
     }
 
     public static Email createNewEmail() throws IOException {
@@ -106,7 +102,7 @@ public class InformationFromConsole implements Serializable {
         do {
             try {
                 count = 0;
-                 numberOfLetters = Integer.parseInt(READER.readLine());
+                numberOfLetters = Integer.parseInt(READER.readLine());
             } catch (NumberFormatException e) {
                 count++;
                 System.err.println("You have entered an unknown character, use only digits");
