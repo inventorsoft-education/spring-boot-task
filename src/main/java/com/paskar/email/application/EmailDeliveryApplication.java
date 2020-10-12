@@ -1,10 +1,17 @@
 package com.paskar.email.application;
 
+import com.paskar.email.application.console.Email;
 import com.paskar.email.application.console.InformationFromConsole;
+import com.paskar.email.application.repositiory.CreateAndSaveEmail;
+import com.paskar.email.application.repositiory.FindEmail;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.paskar.email.application.console.InformationFromConsole.*;
 
@@ -12,21 +19,22 @@ import static com.paskar.email.application.console.InformationFromConsole.*;
 @EnableScheduling
 public class EmailDeliveryApplication implements CommandLineRunner {
 
-    private final InformationFromConsole console;
+    private final CreateAndSaveEmail email;
 
-    public EmailDeliveryApplication(InformationFromConsole informationFromConsole) {
-        this.console = informationFromConsole;
+    public EmailDeliveryApplication(CreateAndSaveEmail email) {
+        this.email = email;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        List<Email> listWithAllEmails = new ArrayList<>();
         int numberOfLetters = numberOfLettersValidation();
 
         for (int i = 0; i < numberOfLetters; i++) {
-            console.getListWithAllEmails().add(createNewEmail());
+            listWithAllEmails.add(email.createNewEmail());
         }
 
-        save(console.getListWithAllEmails());
+        email.save(listWithAllEmails);
     }
 
     public static void main(String[] args) {

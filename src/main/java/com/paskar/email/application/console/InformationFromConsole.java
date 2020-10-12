@@ -3,23 +3,21 @@ package com.paskar.email.application.console;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paskar.email.application.repositiory.CreateAndSaveEmail;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class InformationFromConsole {
-
-    @Getter
-    private List<Email> listWithAllEmails = new ArrayList<>();
+public class InformationFromConsole implements CreateAndSaveEmail {
 
     private final static String baseFile = "emailList.json";
 
@@ -29,12 +27,14 @@ public class InformationFromConsole {
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
 
-    public static void save(List<Email> email) throws IOException {
+    @Override
+    public void save(List<Email> email) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(baseFile), email);
     }
 
-    public static Email createNewEmail() throws IOException {
+    @Override
+    public Email createNewEmail() throws IOException {
         String recipient = recipientValidation();
         String subject = emailSubject();
         String body = bodyValidation();
