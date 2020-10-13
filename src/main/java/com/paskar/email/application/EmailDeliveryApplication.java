@@ -1,7 +1,7 @@
 package com.paskar.email.application;
 
 import com.paskar.email.application.console.Email;
-import com.paskar.email.application.repositiory.CreateAndSaveEmail;
+import com.paskar.email.application.repositiory.EmailRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +16,9 @@ import static com.paskar.email.application.console.InformationFromConsole.number
 @EnableScheduling
 public class EmailDeliveryApplication implements CommandLineRunner {
 
-    private final CreateAndSaveEmail email;
+    private final EmailRepository email;
 
-    public EmailDeliveryApplication(CreateAndSaveEmail email) {
+    public EmailDeliveryApplication(EmailRepository email) {
         this.email = email;
     }
 
@@ -30,7 +30,6 @@ public class EmailDeliveryApplication implements CommandLineRunner {
         for (int i = 0; i < numberOfLetters; i++) {
             listWithAllEmails.add(email.createNewEmail());
         }
-
         email.save(listWithAllEmails);
     }
 

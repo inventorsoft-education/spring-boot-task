@@ -1,49 +1,26 @@
 package com.paskar.email.application.console;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paskar.email.application.repositiory.CreateAndSaveEmail;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class InformationFromConsole implements CreateAndSaveEmail {
-
-    private final static String baseFile = "emailList.json";
+public class InformationFromConsole {
 
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("MM dd yyyy HH:mm");
 
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
-
-    @Override
-    public void save(List<Email> email) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(new File(baseFile), email);
-    }
-
-    @Override
-    public Email createNewEmail() throws IOException {
-        String recipient = recipientValidation();
-        String subject = emailSubject();
-        String body = bodyValidation();
-        LocalDateTime date = dateValidation();
-        return new Email(recipient, subject, body, date);
-    }
-
-
-    public static String recipientValidation() throws IOException {
+    public String recipientValidation() throws IOException {
         String emailRegEx = "^([\\w-.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
         System.out.println("Enter the recipient's email address \nFor example: \"YourExample@gmail.com\"");
         while (true) {
@@ -58,12 +35,12 @@ public class InformationFromConsole implements CreateAndSaveEmail {
         }
     }
 
-    public static String emailSubject() throws IOException {
+    public String emailSubject() throws IOException {
         System.out.println("Enter the subject of your email");
         return READER.readLine();
     }
 
-    public static String bodyValidation() throws IOException {
+    public String bodyValidation() throws IOException {
         StringBuilder builder = new StringBuilder();
         System.out.println("Please enter your message\n" +
                 "When you have finished writing your message, please press the ENTER once and type the word \"Exit\"");
@@ -76,7 +53,7 @@ public class InformationFromConsole implements CreateAndSaveEmail {
         } while (true);
     }
 
-    public static LocalDateTime dateValidation() throws IOException {
+    public LocalDateTime dateValidation() throws IOException {
         LocalDateTime time = null;
         System.out.println("Pay attention to a date template, date has to be entered only in this format\n" +
                 "month day year hours:minutes - for example - 09 12 2020 20:56\n" +
