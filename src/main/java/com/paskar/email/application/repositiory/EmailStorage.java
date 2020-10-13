@@ -4,11 +4,9 @@ package com.paskar.email.application.repositiory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paskar.email.application.console.Email;
-import com.paskar.email.application.console.InformationFromConsole;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,25 +15,17 @@ import java.util.Optional;
 public class EmailStorage implements EmailRepository {
     private final static String baseFile = "emailList.json";
 
-    private final InformationFromConsole console;
-
-    public EmailStorage(InformationFromConsole console) {
-        this.console = console;
-    }
-
     @Override
     public void save(List<Email> email) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(new File(baseFile), email);
+        PrintWriter out = new PrintWriter(new BufferedWriter(
+                new FileWriter(baseFile, true))); // append mode file writer
+        mapper.writeValue(out, email);
     }
 
     @Override
     public Email createNewEmail() throws IOException {
-        String recipient = console.recipientValidation();
-        String subject = console.emailSubject();
-        String body = console.bodyValidation();
-        LocalDateTime date = console.dateValidation();
-        return new Email(recipient, subject, body, date);
+        return null;
     }
 
     @Override

@@ -20,6 +20,14 @@ public class InformationFromConsole {
 
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
+    public Email createNewEmailFromConsole() throws IOException {
+        String recipient = recipientValidation();
+        String subject = emailSubject();
+        String body = bodyValidation();
+        LocalDateTime date = dateValidation();
+        return new Email(recipient, subject, body, date);
+    }
+
     public String recipientValidation() throws IOException {
         String emailRegEx = "^([\\w-.]+){1,64}@([\\w&&[^_]]+){2,255}.[a-z]{2,}$";
         System.out.println("Enter the recipient's email address \nFor example: \"YourExample@gmail.com\"");
@@ -72,7 +80,7 @@ public class InformationFromConsole {
         return time;
     }
 
-    public static int numberOfLettersValidation() throws IOException {
+    public int numberOfLettersValidation() throws IOException {
         System.out.println("How many letters do you want to send? (enter a number)");
         int numberOfLetters = 0;
         int count = 0;
