@@ -7,12 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,14 +66,14 @@ public class ConsoleScanner implements CommandLineRunner {
         body = scanner.nextLine();
 
         System.out.println("Delivery Date in format (dd.MM.yyyy HH:mm): ");
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm").withZone(ZoneOffset.UTC);;
         stringDate = scanner.nextLine();
         try {
-            LocalDateTime date = LocalDateTime.parse(stringDate);
+            LocalDateTime date = LocalDateTime.parse(stringDate, dateFormat);
             Email email = new Email(recipient, subject, body, date);
             emailDAO.saveMail(email);
             System.out.println("Email was saved!");
-        } catch (ParseException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Invalid delivery date!");
         }
