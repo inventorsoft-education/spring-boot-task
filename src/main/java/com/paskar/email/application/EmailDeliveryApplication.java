@@ -15,11 +15,11 @@ import java.util.List;
 @EnableScheduling
 public class EmailDeliveryApplication implements CommandLineRunner {
 
-    private final EmailRepository email;
+    private final EmailRepository repository;
     private final InformationFromConsole console;
 
     public EmailDeliveryApplication(EmailRepository email, InformationFromConsole console) {
-        this.email = email;
+        this.repository = email;
         this.console = console;
     }
 
@@ -31,7 +31,7 @@ public class EmailDeliveryApplication implements CommandLineRunner {
         for (int i = 0; i < numberOfLetters; i++) {
             listWithAllEmails.add(console.createNewEmailFromConsole());
         }
-        email.save(listWithAllEmails);
+        repository.save(listWithAllEmails);
     }
 
     public static void main(String[] args) {
