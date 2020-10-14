@@ -2,6 +2,7 @@ package com.paskar.email.application.repositiory;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paskar.email.application.console.Email;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +13,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 public class EmailStorage implements EmailRepository {
     private final static String baseFile = "emailList.json";
 
-    private final OwnMapper mapper;
+    private final ObjectMapper mapper;
 
-    public EmailStorage(OwnMapper mapper) {
+    public EmailStorage(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
@@ -49,6 +51,6 @@ public class EmailStorage implements EmailRepository {
                 return result;
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 }
