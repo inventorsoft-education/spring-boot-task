@@ -12,18 +12,16 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Repository
 public class EmailDAO {
-    private String repLocation;
-    private ObjectMapper mapper;
+    private final String repLocation;
+    private final ObjectMapper mapper;
 
     @Autowired
     public EmailDAO(Environment environment, ObjectMapper mapper) {
@@ -49,11 +47,11 @@ public class EmailDAO {
 
     public List<Email> emailsToSend() throws IOException {
         List<Email> emailList = findAll();
-        Date currentDate = new Date();
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
         return emailList
                 .stream()
-                .filter(e -> e.getDate().getTime() <= currentDate.getTime())
+                .filter(e -> e.getDate().isAfter(currentDateTime))
                 .collect(Collectors.toList());
     }
 

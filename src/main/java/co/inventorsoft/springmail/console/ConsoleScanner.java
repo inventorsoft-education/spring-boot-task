@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -67,11 +69,10 @@ public class ConsoleScanner implements CommandLineRunner {
         body = scanner.nextLine();
 
         System.out.println("Delivery Date in format (dd.MM.yyyy HH:mm): ");
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         stringDate = scanner.nextLine();
-        Date date = null;
         try {
-            date = dateFormat.parse(stringDate);
+            LocalDateTime date = LocalDateTime.parse(stringDate);
             Email email = new Email(recipient, subject, body, date);
             emailDAO.saveMail(email);
             System.out.println("Email was saved!");

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class Email {
     private String recipient;
     private String subject;
     private String body;
-    private Date date;
+    private LocalDateTime date;
 
     public String getRecipient() {
         return recipient;
@@ -42,11 +42,11 @@ public class Email {
         this.body = text;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }
