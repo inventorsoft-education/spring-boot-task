@@ -23,16 +23,17 @@ import java.util.stream.Collectors;
 @Repository
 public class EmailDAO {
     private String repLocation;
+    private ObjectMapper mapper;
 
     @Autowired
-    public EmailDAO(Environment environment) {
+    public EmailDAO(Environment environment, ObjectMapper mapper) {
         this.repLocation = Objects.requireNonNull(FileSystemUtils.class.getClassLoader().getResource(""))
                 .getPath() + environment.getProperty("emails.storage.location");
+        this.mapper = mapper;
     }
 
     public List<Email> findAll() throws IOException {
         List<Email> emailsList = new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
         File file = getFileWithEmails();
 
         if (file.length() > 0){
@@ -57,7 +58,6 @@ public class EmailDAO {
     }
 
     public void replaceAll(List<Email> emails){
-        ObjectMapper mapper = new ObjectMapper();
         File file = new File(repLocation);
         try {
             mapper.writeValue(file, emails);
