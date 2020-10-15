@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -42,15 +41,30 @@ public class EmailStorage implements EmailRepository {
     }
 
     @Override
-    public List<Email> findEmailsNearDeliveryDate(LocalDateTime currentDate) throws IOException {
+    public List<Email> findEmailsNearDeliveryDate() throws IOException {
         LocalDateTime time = LocalDateTime.now();
         List<Email> emailList = findAll();
         List<Email> result = new ArrayList<>();
+
         for (Email email : emailList) {
             if (time.equals(email.getDate())) {
-                return result;
+                result.add(email);
             }
         }
-        return Collections.emptyList();
+        return result;
+    }
+
+    @Override
+    public void deletingMassagesThatWereSent() throws IOException {
+        LocalDateTime time = LocalDateTime.now();
+        List<Email> emailList = findAll();
+        List<Email> resultList = new ArrayList<>();
+
+        for (Email email : emailList) {
+            if (!time.equals(email.getDate())) {
+                resultList.add(email);
+            }
+        }
+        mapper.writeValue(new File(baseFile), resultList);
     }
 }
