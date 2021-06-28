@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResultDto {
     private String round;
-    private TeamDto oneDto;
-    private TeamDto twoDto;
+    private TeamDto one;
+    private TeamDto two;
     private String gameResult;
 }
