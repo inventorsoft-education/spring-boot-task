@@ -8,5 +8,5 @@ import lombok.Data;
 public class Team {
     private String name;
     private String captain;
-    private String couch;
+    private String coach;
 }

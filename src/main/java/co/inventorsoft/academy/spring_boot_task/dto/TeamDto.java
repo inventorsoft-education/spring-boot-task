@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class TeamDto {
     private String name;
     private String captain;
-    private String couch;
+    private String coach;
 }
