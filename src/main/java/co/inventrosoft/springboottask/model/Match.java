@@ -52,7 +52,7 @@ public class Match {
         }
         return score;
     }
-    // lombok are broken here idk
+    // lombok is broken here idk
     public boolean getPlayed() {
         return this.played;
     }
@@ -74,12 +74,5 @@ public class Match {
         else {
             secondTeam = team;
         }
-    }
-    public String toCsv() {
-        String str = null;
-        if (this.played) {
-            str = "1/"+this.roundCode+","+this.firstTeam.getName()+","+this.secondTeam.getName()+","+this.getScore()+"\n";
-        }
-        return str;
     }
 }

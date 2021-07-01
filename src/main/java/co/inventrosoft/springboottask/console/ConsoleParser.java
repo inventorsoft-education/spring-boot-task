@@ -17,11 +17,6 @@ import java.util.Map;
 public class ConsoleParser {
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    private boolean isPowerOfTwo(int number) {
-        final double log2number = Math.log(number) / Math.log(2); // log base 2
-        return (int)Math.ceil(log2number) == (int)Math.floor(log2number);
-    }
-
     public List<Team> getTeams() throws IOException {
         ArrayList<Team> teams = new ArrayList<>();
         int teamCount = getTeamCount();
@@ -45,7 +40,12 @@ public class ConsoleParser {
             System.out.print("Enter number of teams: ");
             try {
                 teamCount = Integer.parseInt(reader.readLine());
-                if (teamCount < 4 || !isPowerOfTwo(teamCount)) {
+
+                // check if power of 2
+                double log2 = Math.log(teamCount) / Math.log(2); // log base 2
+                boolean isPowerOfTwo = (int)Math.ceil(log2) == (int)Math.floor(log2);
+
+                if (teamCount < 4 || !isPowerOfTwo) {
                     System.out.println("Number of teams should be at least 4 and power of 2!");
                 }
                 else {

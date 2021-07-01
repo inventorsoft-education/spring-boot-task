@@ -92,6 +92,15 @@ public class MatchService {
         return match;
     }
 
+    public String toCsv(Match match) {
+        String str = null;
+        if (match.getPlayed()) {
+            str = "1/" + match.getRoundCode() + "," + match.getFirstTeam().getName() + ",";
+            str += match.getSecondTeam().getName() + "," + match.getScore() + "\n";
+        }
+        return str;
+    }
+
     public void writeAllToCsv() throws IOException {
         List<Match> matches = matchRepository.findAll();
         try (PrintWriter writer = new PrintWriter("result.csv")) {
@@ -99,16 +108,11 @@ public class MatchService {
             StringBuilder sb = new StringBuilder();
             sb.append("Round,Team 1,Team 2,Score\n");
             for (Match match: matches) {
-                sb.append(match.toCsv());
+                sb.append(toCsv(match));
             }
-
             writer.write(sb.toString());
-
-
-
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }
