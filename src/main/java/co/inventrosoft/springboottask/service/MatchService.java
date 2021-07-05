@@ -4,22 +4,25 @@ import co.inventrosoft.springboottask.console.MatchResult;
 import co.inventrosoft.springboottask.model.Match;
 import co.inventrosoft.springboottask.model.Team;
 import co.inventrosoft.springboottask.repository.MatchRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class MatchService {
+    private final TeamService teamService;
+
     private final MatchRepository matchRepository;
 
-    public MatchService(MatchRepository matchRepository) {
+    public MatchService(MatchRepository matchRepository, TeamService teamService) {
         this.matchRepository = matchRepository;
+        this.teamService = teamService;
     }
+
     /**
      * creates a tournament with matches,
      * where teams in first round stores teams from list, the rest stores null
@@ -114,5 +117,9 @@ public class MatchService {
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public boolean areTeamsInMatchResultExists(MatchResult matchResult) throws IOException {
+        return teamService.isTeamExist(matchResult.getFirstTeamName()) && teamService.isTeamExist(matchResult.getSecondTeamName());
     }
 }

@@ -2,12 +2,12 @@ package co.inventrosoft.springboottask.service;
 
 import co.inventrosoft.springboottask.model.Team;
 import co.inventrosoft.springboottask.repository.TeamRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
-@Component
+@Service
 public class TeamService {
     private final TeamRepository teamRepository;
 

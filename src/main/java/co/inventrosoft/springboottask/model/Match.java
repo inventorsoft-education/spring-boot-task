@@ -75,4 +75,10 @@ public class Match {
             secondTeam = team;
         }
     }
+
+    @JsonIgnore
+    public boolean isFinal() {
+        return this.roundCode == 1;
+    }
+
 }
