@@ -1,11 +1,8 @@
 package demohometask.demohometask;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
 public class Team implements Serializable {
     private String name;
     private String capitan;
