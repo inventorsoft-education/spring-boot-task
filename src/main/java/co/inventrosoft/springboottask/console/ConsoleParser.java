@@ -16,6 +16,10 @@ import java.util.Map;
 @Component
 public class ConsoleParser {
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private final TeamService teamService;
+    public ConsoleParser(TeamService teamService) {
+        this.teamService = teamService;
+    }
 
     public List<Team> getTeams() throws IOException {
         ArrayList<Team> teams = new ArrayList<>();
@@ -23,7 +27,10 @@ public class ConsoleParser {
         for (int i = 0; i < teamCount; i++) {
             while(true) {
                 Team team = getTeam();
-                if (teams.stream().noneMatch(teami -> teami.getName().equals(team.getName()))) {
+                // check if this team in list
+                boolean isTeamNotInTeamList = teams.stream().noneMatch(teami -> teami.getName().equals(team.getName()));
+
+                if (isTeamNotInTeamList) {
                     teams.add(team);
                     break;
                 }
@@ -81,7 +88,7 @@ public class ConsoleParser {
             }
         }
         while (!valid);
-        System.out.println("Team with name \"" + teamData[0] + "\" was created.\n");
+        System.out.println("Team with name \"" + teamData[0] + "\" was added.\n");
         return new Team(teamData[0], teamData[1], teamData[2]);
     }
 

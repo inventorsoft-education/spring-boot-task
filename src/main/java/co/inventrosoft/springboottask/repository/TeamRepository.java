@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface TeamRepository {
-    void saveAll(List<Team> teams) throws IOException;
-    void add(Team team) throws IOException;
-    List<Team> findAll() throws IOException;
+    void save(List<Team> teams);
+    void add(Team team);
+    void update(Team team);
+    boolean isExist(String teamName);
 }

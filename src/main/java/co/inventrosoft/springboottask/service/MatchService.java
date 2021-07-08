@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,61 +23,34 @@ public class MatchService {
     }
 
     /**
-     * creates a tournament with matches,
-     * where teams in first round stores teams from list, the rest stores null
-     * @param teams stores teams
-     */
-    public void createTournament(List<Team> teams) throws IOException {
-        int teamCount = teams.size();
-        int roundCount = (int)(Math.log(teamCount) / Math.log(2)); // log base 2
-        ArrayList<Match> matches = new ArrayList<>();
-
-        for (int round = 0; round < roundCount; round++) {
-
-            // teamCount / (2 ^ (round+1))
-            // this is code of round. e.g code == 2 -> round name = 1/2
-            int numOfMatchesInRound = (int)(teamCount / (Math.pow(2, round+1)));
-
-            for (int matchOrder = 0; matchOrder < numOfMatchesInRound; matchOrder++) {
-                Match match = new Match(numOfMatchesInRound, matchOrder);
-                // if first round set teams to matches
-                if (round == 0) {
-                    match.setFirstTeam(teams.get(matchOrder * 2));
-                    match.setSecondTeam(teams.get(matchOrder * 2 + 1));
-                }
-                matches.add(match);
-            }
-        }
-        matchRepository.saveAll(matches);
-    }
-
-    /**
      * finds and sets match's score by MatchResult object
      * @param matchResult stores score and team names
      * @param match is a match to be updated
      */
-    public void updateMatchResults(MatchResult matchResult, Match match) throws IOException {
+    public void updateMatchResults(MatchResult matchResult, Match match) {
         match.setFirstTeamResult(matchResult.getFirstTeamResult());
         match.setSecondTeamResult(matchResult.getSecondTeamResult());
         match.setPlayed(true);
-        matchRepository.save(match);
+        matchRepository.update(match);
 
         int roundCode = match.getRoundCode();
         int order = match.getOrder();
 
-        // if not final
-        if (roundCode != 1) {
+        if (!match.isFinal()) {
             Team winner = match.getWinner();
             // find match where winner should be placed
-            Match nextMatch = matchRepository.getByRoundCodeAndOrder(roundCode / 2, order / 2);
+            Match nextMatch = matchRepository.getByRoundCodeAndOrder(roundCode / 2, order / 2, match.getTournamentId());
 
             nextMatch.setTeamByOrder(order, winner);
-            matchRepository.save(nextMatch);
+            matchRepository.update(nextMatch);
         }
     }
 
-    public List<Match> getTournament() throws IOException {
-        return matchRepository.findAll();
+    public List<Match> getTournament(int tournamentId) {
+        return matchRepository.findAll(tournamentId);
+    }
+    public void saveAll(List<Match> matches) {
+        matchRepository.save(matches);
     }
 
     /**
@@ -86,11 +58,11 @@ public class MatchService {
      * swaps values in matchResult if match was not found
      * @param matchResult stores score and team names
      */
-    public Match getMatchByResult(MatchResult matchResult) throws IOException {
-        Match match = matchRepository.getByTeamNames(matchResult.getFirstTeamName(), matchResult.getSecondTeamName());
+    public Match getMatchByResult(MatchResult matchResult, int tournamentId) {
+        Match match = matchRepository.getByTeamNames(matchResult.getFirstTeamName(), matchResult.getSecondTeamName(), tournamentId);
         if (match == null) {
             matchResult.swap();
-            match = matchRepository.getByTeamNames(matchResult.getFirstTeamName(), matchResult.getSecondTeamName());
+            match = matchRepository.getByTeamNames(matchResult.getFirstTeamName(), matchResult.getSecondTeamName(), tournamentId);
         }
         return match;
     }
@@ -104,8 +76,8 @@ public class MatchService {
         return str;
     }
 
-    public void writeAllToCsv() throws IOException {
-        List<Match> matches = matchRepository.findAll();
+    public void writeAllToCsv(int tournamentId) {
+        List<Match> matches = matchRepository.findAll(tournamentId);
         try (PrintWriter writer = new PrintWriter("result.csv")) {
 
             StringBuilder sb = new StringBuilder();
@@ -119,7 +91,7 @@ public class MatchService {
         }
     }
 
-    public boolean areTeamsInMatchResultExists(MatchResult matchResult) throws IOException {
+    public boolean areTeamsInMatchResultExists(MatchResult matchResult) {
         return teamService.isTeamExist(matchResult.getFirstTeamName()) && teamService.isTeamExist(matchResult.getSecondTeamName());
     }
 }

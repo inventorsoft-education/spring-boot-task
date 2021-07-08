@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface MatchRepository {
-    void saveAll(List<Match> matches) throws IOException;
-    List<Match> findAll() throws IOException;
-    Match getByTeamNames(String firstTeam, String secondTeam) throws IOException;
-    Match getByRoundCodeAndOrder(int roundCode, int order) throws IOException;
-    boolean save(Match match) throws IOException;
+    List<Match> findAll(int tournamentId);
+    Match getByTeamNames(String firstTeam, String secondTeam, int tournamentId);
+    Match getByRoundCodeAndOrder(int roundCode, int order, int tournamentId);
+
+    void save(List<Match> matches);
+    void update(Match match);
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Match {
+    int id;
     //  1/round - name of round. e.g roundCode = 8 -> round name = 1/8
     //  roundCode == number of matches in current round
     //  if roundCode == 1 - this round is final
@@ -25,9 +26,12 @@ public class Match {
     int firstTeamResult;
     int secondTeamResult;
 
-    public Match(int roundCode, int order) {
+    int tournamentId;
+
+    public Match(int roundCode, int order, int tournamentId) {
         this.roundCode = roundCode;
         this.order = order;
+        this.tournamentId = tournamentId;
     }
 
     @Override
@@ -36,14 +40,27 @@ public class Match {
         str += this.roundCode != 1 ? "Round 1/" + this.roundCode : "Final!";
 
         if (this.played) {
-            str += "Score: " + getScore();
+            str += "\nScore: " + getScore();
         }
         str += "\nTeam 1: " + (firstTeam != null ? firstTeam + "\n" : "undefined\n");
         str += "Team 2: " + (secondTeam != null ? secondTeam + "\n" : "undefined\n");
 
         return str;
     }
-
+    @JsonIgnore
+    public String getFirstTeamName() {
+        if (firstTeam != null) {
+            return firstTeam.getName();
+        }
+        return null;
+    }
+    @JsonIgnore
+    public String getSecondTeamName() {
+        if (secondTeam != null) {
+            return secondTeam.getName();
+        }
+        return null;
+    }
     @JsonIgnore
     public String getScore() {
         String score = null;

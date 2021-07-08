@@ -16,11 +16,10 @@ public class TeamService {
     }
 
     public void save(List<Team> teams) throws IOException {
-        teamRepository.saveAll(teams);
+        teamRepository.save(teams);
     }
 
-    public boolean isTeamExist(String teamName) throws IOException {
-        List<Team> teams = teamRepository.findAll();
-        return teams.stream().anyMatch(team -> team.getName().equals(teamName));
+    public boolean isTeamExist(String teamName) {
+        return teamRepository.isExist(teamName);
     }
 }
