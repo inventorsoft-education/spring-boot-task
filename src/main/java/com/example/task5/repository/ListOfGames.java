@@ -9,13 +9,10 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class ListOfGames {
+public class ListOfGames implements DataStore {
     private Map<String, List<Game>> games;
     private String path;
 
@@ -30,9 +27,11 @@ public class ListOfGames {
     }
 
     public void addGame(Game game) {
-        if (!games.containsKey(game.getRound()))
-            games.put(game.getRound(), new ArrayList<>());
-        games.get(game.getRound()).add(game);
+        games.compute(game.getRound(), (round, existingGames) -> {
+            final List<Game> games = Objects.requireNonNullElseGet(existingGames, ArrayList::new);
+            games.add(game);
+            return games;
+        });
     }
 
     public void printGame() {
