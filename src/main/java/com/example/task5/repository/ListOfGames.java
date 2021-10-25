@@ -2,13 +2,7 @@ package com.example.task5.repository;
 
 import com.example.task5.model.Game;
 import com.example.task5.model.Team;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,21 +43,4 @@ public class ListOfGames implements DataStore {
         }
         return games.get(round).stream().map(Game::getWinner).collect(Collectors.toList());
     }
-
-    public void toCVS() {
-        ArrayList<Game> ttemp = new ArrayList<>();
-        for (String s : games.keySet()) {
-            ttemp.addAll(games.get(s));
-        }
-            try (Writer writer = new FileWriter(path)) {
-                StatefulBeanToCsv<Game> statefulBeanToCsv = new StatefulBeanToCsvBuilder<Game>(writer).build();
-                statefulBeanToCsv.write(ttemp);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CsvRequiredFieldEmptyException e) {
-                e.printStackTrace();
-            } catch (CsvDataTypeMismatchException e) {
-                e.printStackTrace();
-            }
-        }
 }

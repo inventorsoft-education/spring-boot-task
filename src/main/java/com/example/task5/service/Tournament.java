@@ -5,7 +5,10 @@ import com.example.task5.model.Team;
 import com.example.task5.repository.ListOfGames;
 import com.example.task5.repository.ListOfTeams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -17,12 +20,14 @@ public class Tournament {
     private ListOfTeams listOfTeams;
     private final Scanner scanner;
     private Team winner;
+    private CSV csv;
 
     @Autowired
-    Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner){
+    Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner, CSV csv){
         this.listOfTeams = listOfTeams;
         this.listOfGames = listOfGames;
         this.scanner = scanner;
+        this.csv = csv;
     }
 
     public void register(){
@@ -113,10 +118,8 @@ public class Tournament {
         return winner;
     }
     public void resultsExport() {
-        listOfGames.toCVS();
-        System.out.println("Game List export to " + listOfTeams.getPath());
-        listOfTeams.toCVS();
-        System.out.println("Team list export to " + listOfTeams.getPath());
+        csv.write(listOfTeams.get(), listOfTeams.getPath());
+        csv.write(listOfGames.getGames(), listOfGames.getPath());
     }
 
     public void introduce(){
