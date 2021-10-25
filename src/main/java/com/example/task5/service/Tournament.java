@@ -21,13 +21,15 @@ public class Tournament {
     private final Scanner scanner;
     private Team winner;
     private CSV csv;
+    private Console console;
 
     @Autowired
-    Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner, CSV csv){
+    Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner, CSV csv, Console console){
         this.listOfTeams = listOfTeams;
         this.listOfGames = listOfGames;
         this.scanner = scanner;
         this.csv = csv;
+        this.console = console;
     }
 
     public void register(){
@@ -102,16 +104,11 @@ public class Tournament {
     }
 
     public void printGamesTable() {
-
-        System.out.println("GAME LIST");
-        for (String s : listOfGames.getGames().keySet()) {
-           listOfGames.getGames().get(s).stream().forEach(System.out::println);
-
-        }
+        console.printMap("GAME LIST", listOfGames.getGames());
     }
 
     public  void printTeamsTable(){
-          listOfTeams.print();
+         console.printList("TEAMS LIST", listOfTeams.get());
     }
 
     public Team getWinner(){

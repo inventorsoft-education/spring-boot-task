@@ -28,14 +28,7 @@ public class ListOfGames implements DataStore {
         });
     }
 
-    public void printGame() {
-        System.out.println("**********************");
-        System.out.println("GAMES LIST");
-        for (String s : games.keySet()) {
-            games.get(s).stream().forEach(System.out::println);
-        }
-        System.out.println("**********************");
-    }
+
 
     public List<Team> getWinners(String round) {
         if (!games.containsKey(round)) {

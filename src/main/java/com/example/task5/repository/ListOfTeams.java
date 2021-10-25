@@ -23,15 +23,6 @@ public class ListOfTeams {
         return teams.size();
     }
 
-    public void print(){
-        System.out.println("**********************");
-        System.out.println("TEAMS LIST");
-        for (Team t: teams) {
-            System.out.println(t);
-        }
-        System.out.println("**********************");
-    }
-
     public String getPath() {
         return path;
     }
