@@ -1,5 +1,6 @@
 package com.example.task5.service;
 
+import com.example.task5.model.Game;
 import com.example.task5.repository.ListOfGames;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class Console {
         }
     }
     
-    public <T> void printMap(String message, Map<String, List<T>> map){
+    public  <K> void printMap(String message, Map<String, List<K>> map){
         System.out.println(message);
         for (String s : map.keySet()) {
             map.get(s).stream().forEach(System.out::println);

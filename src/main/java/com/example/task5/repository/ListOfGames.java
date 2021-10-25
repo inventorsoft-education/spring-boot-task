@@ -7,12 +7,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ListOfGames implements DataStore {
-    private Map<String, List<Game>> games;
+    private HashMap<String, List<Game>> games;
     private String path;
 
     public ListOfGames(String path) {
         games = new HashMap<>();
         this.path = path;
+    }
+
+    public void setGames(){
+        this.games = getData(new HashMap<>());
     }
 
     public String getPath() { return path; }

@@ -36,7 +36,7 @@ public class CSV {
     public void write(Map<String, List<Game>> map, String pathGame){
         ArrayList<Game> ttemp = new ArrayList<>();
         for (String s : map.keySet()) {
-            ttemp.addAll((Collection<? extends Game>) map.get(s));
+            ttemp.addAll(map.get(s));
         }
         try (Writer writer = new FileWriter(pathGame)) {
             StatefulBeanToCsv<Game> statefulBeanToCsv = new StatefulBeanToCsvBuilder<Game>(writer).build();
@@ -48,10 +48,10 @@ public class CSV {
         } catch (CsvDataTypeMismatchException e) {
             e.printStackTrace();
         }
-        System.out.println("Data was expoeted to" + pathGame);
+        System.out.println("Data was expoeted to " + pathGame);
     }
 
-    public List<Team> read(List<Team> list, String pathTeam){
+    public ArrayList<Team> read(ArrayList<Team> list, String pathTeam){
         System.out.println("Reading data from " + pathTeam);
         try {
             FileReader filereader = new FileReader(pathTeam);
@@ -66,5 +66,28 @@ public class CSV {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public HashMap<String, List<Game>> read(HashMap<String, List<Game>> map, String pathTeam){
+        System.out.println("Reading data from " + pathTeam);
+        try {
+            FileReader filereader = new FileReader(pathTeam);
+            CSVReader csvReader = new CSVReaderBuilder(filereader)
+                    .withSkipLines(1)
+                    .build();
+            List<String[]> strings = csvReader.readAll();
+            for (String[] arr :strings ) {
+                String[] temparr = arr[2].split(", ");
+                String[] temparr2 = arr[3].split(", ");
+                map.put(arr[1], new ArrayList<>());
+                map.get(arr[1]).add(new Game(
+                        new Team(temparr[0], temparr[1], temparr[2]),
+                        new Team(temparr2[0], temparr2[1], temparr2[2]),
+                        arr[1], arr[0]));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 }

@@ -22,6 +22,7 @@ public class Tournament {
     private Team winner;
     private CSV csv;
     private Console console;
+    private boolean isUse = false;
 
     @Autowired
     Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner, CSV csv, Console console){
@@ -37,24 +38,31 @@ public class Tournament {
         Team team;
 
         boolean isContinue = true;
-
         while (isContinue) {
-            System.out.println("**********************");
-            System.out.println("NEW TEAM REGISTRATION");
-            System.out.print("Enter team's name: ");
-            name = scanner.nextLine();
-            System.out.print("Enter team's captain: ");
-            captain = scanner.nextLine();
-            System.out.print("Enter team's coach: ");
-            coach = scanner.nextLine();
+            System.out.print("Use saved teams data");
+            if(isYes()){
+                listOfTeams.setTeams();
+                isUse = true;
+                break;
+            }
+           else {
+                System.out.println("**********************");
+                System.out.println("NEW TEAM REGISTRATION");
+                System.out.print("Enter team's name: ");
+                name = scanner.nextLine();
+                System.out.print("Enter team's captain: ");
+                captain = scanner.nextLine();
+                System.out.print("Enter team's coach: ");
+                coach = scanner.nextLine();
 
-            team = new Team(name, captain, coach);
-            System.out.println(team);
-            listOfTeams.add(team);
+                team = new Team(name, captain, coach);
+                System.out.println(team);
+                listOfTeams.add(team);
 
-            if(isPowerOfTwo(listOfTeams.size()) && listOfTeams.size() >= 4){
-                System.out.println("Add more teams");
-                isContinue = isYes();
+                if (isPowerOfTwo(listOfTeams.size()) && listOfTeams.size() >= 4) {
+                    System.out.println("Add more teams");
+                    isContinue = isYes();
+                }
             }
         }
 
@@ -65,44 +73,49 @@ public class Tournament {
         Game gtemp;
         Random random = new Random();
         int one, two;
-        int rmax =  (int) (Math.log(ttemp.size()) / Math.log(2));
+        int rmax = (int) (Math.log(ttemp.size()) / Math.log(2));
 
-        for (int i = rmax; i >= 0; i--){
-            while (ttemp.size() >= 2) {
+        System.out.print("Use stored result");
+        if (isUse && isYes()) listOfGames.setGames();
+        else {
+            for (int i = rmax; i >= 0; i--) {
+                while (ttemp.size() >= 2) {
 
-                do {
-                    one = random.nextInt(ttemp.size());
-                    two = random.nextInt(ttemp.size());
-                } while (one <= two);
+                    do {
+                        one = random.nextInt(ttemp.size());
+                        two = random.nextInt(ttemp.size());
+                    } while (one <= two);
 
-                gtemp = new Game(
-                        ttemp.get(one),
-                        ttemp.get(two),
-                        i != 1 ? "1/" + String.valueOf(i) : "final",
-                        one + ":" + two
-                );
+                    gtemp = new Game(
+                            ttemp.get(one),
+                            ttemp.get(two),
+                            i != 1 ? "1/" + String.valueOf(i) : "final",
+                            one + ":" + two
+                    );
 
-                System.out.println( gtemp.getRound() + " " +
-                                    gtemp.getTeamFirst().getName() + " - " +
-                                    gtemp.getTeamSecond().getName());
+                    System.out.println(gtemp.getRound() + " " +
+                            gtemp.getTeamFirst().getName() + " - " +
+                            gtemp.getTeamSecond().getName());
 
-                System.out.print("Use default result: ");
-                if (!isYes()) {
-                    System.out.print("Set result (exp 1:3) ");
-                    gtemp.setResult(scanner.nextLine());
+                    System.out.print("Use default result: ");
+                    if (!isYes()) {
+                        System.out.print("Set result (exp 1:3) ");
+                        gtemp.setResult(scanner.nextLine());
+                    }
+                    listOfGames.addGame(gtemp);
+                    ttemp.remove(one);
+                    ttemp.remove(two);
                 }
-                listOfGames.addGame(gtemp);
-                ttemp.remove(one);
-                ttemp.remove(two);
+                ttemp = listOfGames.getWinners("1/" + String.valueOf(i));
             }
-            ttemp = listOfGames.getWinners("1/" + String.valueOf(i));
-        }
-        ttemp = listOfGames.getWinners("final");
-        for (Team t: ttemp ) {
-            winner = t;
+
+            ttemp = listOfGames.getWinners("final");
+            for (Team t : ttemp) {
+                winner = t;
+            }
+
         }
     }
-
     public void printGamesTable() {
         console.printMap("GAME LIST", listOfGames.getGames());
     }
