@@ -19,7 +19,7 @@ import java.util.*;
 @Component
 public class CSV {
 
-    public void write(ArrayList<Team> list, String pathTeam){
+    public static void write(ArrayList<Team> list, String pathTeam){
         try (Writer writer = new FileWriter(pathTeam)) {
             StatefulBeanToCsv<Team> statefulBeanToCsv = new StatefulBeanToCsvBuilder<Team>(writer).build();
             statefulBeanToCsv.write(list);
@@ -33,7 +33,7 @@ public class CSV {
         System.out.println("Data was exported to " + pathTeam);
     }
 
-    public void write(Map<String, List<Game>> map, String pathGame){
+    public static void write(Map<String, List<Game>> map, String pathGame){
         ArrayList<Game> ttemp = new ArrayList<>();
         for (String s : map.keySet()) {
             ttemp.addAll(map.get(s));
@@ -51,7 +51,7 @@ public class CSV {
         System.out.println("Data was expoeted to " + pathGame);
     }
 
-    public ArrayList<Team> read(ArrayList<Team> list, String pathTeam){
+    public static ArrayList<Team> read(ArrayList<Team> list, String pathTeam){
         System.out.println("Reading data from " + pathTeam);
         try {
             FileReader filereader = new FileReader(pathTeam);
@@ -68,7 +68,7 @@ public class CSV {
         return list;
     }
 
-    public HashMap<String, List<Game>> read(HashMap<String, List<Game>> map, String pathTeam){
+    public static HashMap<String, List<Game>> read(HashMap<String, List<Game>> map, String pathTeam){
         System.out.println("Reading data from " + pathTeam);
         try {
             FileReader filereader = new FileReader(pathTeam);
