@@ -4,17 +4,20 @@ import com.example.task5.model.Team;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListOfTeams implements DataStore {
+public class ListOfTeams  {
     List<Team> teams;
-    private String path;
+    DataStore dataStore;
 
-    public ListOfTeams(String path){
+    public ListOfTeams(DataStore dataStore){
         teams = new ArrayList<>();
-        this.path = path;
+        this.dataStore = dataStore;
     }
 
+    public void upData(){
+        dataStore.setData((ArrayList<Team>) teams);
+    }
     public void setTeams() {
-        teams = getData(new ArrayList<Team>());
+        teams = dataStore.getData(new ArrayList<Team>());
     }
 
     public boolean add(Team team){ return teams.add(team);}
@@ -27,7 +30,4 @@ public class ListOfTeams implements DataStore {
         return teams.size();
     }
 
-    public String getPath() {
-        return path;
-    }
 }

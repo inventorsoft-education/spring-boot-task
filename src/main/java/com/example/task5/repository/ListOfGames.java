@@ -1,25 +1,26 @@
 package com.example.task5.repository;
-
 import com.example.task5.model.Game;
 import com.example.task5.model.Team;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ListOfGames implements DataStore {
+public class ListOfGames {
     private HashMap<String, List<Game>> games;
-    private String path;
+    private DataStore dataStore;
 
-    public ListOfGames(String path) {
+    public ListOfGames(DataStore dataStore) {
         games = new HashMap<>();
-        this.path = path;
+        this.dataStore = dataStore;
+    }
+
+    public void upData(){
+        dataStore.setData(games);
     }
 
     public void setGames(){
-        this.games = getData(new HashMap<>());
+        this.games = dataStore.getData(new HashMap<>());
     }
 
-    public String getPath() { return path; }
     public Map<String, List<Game>> getGames(){
         return games;
     }
