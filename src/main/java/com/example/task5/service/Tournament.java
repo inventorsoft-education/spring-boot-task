@@ -5,10 +5,7 @@ import com.example.task5.model.Team;
 import com.example.task5.repository.ListOfGames;
 import com.example.task5.repository.ListOfTeams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -20,16 +17,14 @@ public class Tournament {
     private ListOfTeams listOfTeams;
     private final Scanner scanner;
     private Team winner;
-    private CSV csv;
     private Console console;
     private boolean isUse = false;
 
     @Autowired
-    Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner, CSV csv, Console console){
+    Tournament(ListOfTeams listOfTeams, ListOfGames listOfGames, Scanner scanner, Console console){
         this.listOfTeams = listOfTeams;
         this.listOfGames = listOfGames;
         this.scanner = scanner;
-        this.csv = csv;
         this.console = console;
     }
 
@@ -44,8 +39,7 @@ public class Tournament {
                 listOfTeams.setTeams();
                 isUse = true;
                 break;
-            }
-           else {
+            }else {
                 System.out.println("**********************");
                 System.out.println("NEW TEAM REGISTRATION");
                 System.out.print("Enter team's name: ");
@@ -89,7 +83,7 @@ public class Tournament {
                     gtemp = new Game(
                             ttemp.get(one),
                             ttemp.get(two),
-                            i != 1 ? "1/" + String.valueOf(i) : "final",
+                            i != 1 ? "1/" + i : "final",
                             one + ":" + two
                     );
 
@@ -106,7 +100,7 @@ public class Tournament {
                     ttemp.remove(one);
                     ttemp.remove(two);
                 }
-                ttemp = listOfGames.getWinners("1/" + String.valueOf(i));
+                ttemp = listOfGames.getWinners("1/" + i);
             }
 
             ttemp = listOfGames.getWinners("final");
@@ -127,9 +121,10 @@ public class Tournament {
     public Team getWinner(){
         return winner;
     }
+
     public void resultsExport() {
-        csv.write(listOfTeams.get(), listOfTeams.getPath());
-        csv.write(listOfGames.getGames(), listOfGames.getPath());
+        listOfTeams.upData();
+        listOfGames.upData();
     }
 
     public void introduce(){
