@@ -1,18 +1,24 @@
 package com.example.demo;
 
+import com.example.demo.service.MainScreen;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @SpringBootApplication
-public class Application {
+@AllArgsConstructor
+public class Application implements CommandLineRunner {
+
+    private final MainScreen mainScreen;
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(SpringConfig.class);
-		SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
+    }
 
-
-	}
-
+    @Override
+    public void run(String... args) throws Exception {
+        mainScreen.mainScreen();
+    }
 }
