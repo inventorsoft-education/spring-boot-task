@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.TeamsList;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +11,7 @@ import java.io.InputStreamReader;
 
 @Service
 @AllArgsConstructor
-@FieldDefaults(level =  AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MainScreen {
     TournamentScreen tournamentScreen;
     RegisterScreen registerScreen;
@@ -21,21 +20,21 @@ public class MainScreen {
         System.out.println("\n                                                   Welcome");
         System.out.println("                         Please register your team to participate in the our tournament");
         registerScreen.register();
-            System.out.println("\n Please choose number of option:\n" +
-                    " 1. Start tournament \n" +
-                    " 2.Logout");
+        System.out.println("\n Please choose number of option:\n" +
+                " 1. Start tournament \n" +
+                " 2.Logout");
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-                String option = reader.readLine();
-                if (option.equals("1")) {
-                    tournamentScreen.round();
-                } else if (option.equals("2")) {
-                    System.out.println("Good bye");
-                    System.exit(0);
-                }
-            } catch (IOException e) {
-                System.out.println("WRONG");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            String option = reader.readLine();
+            if (option.equals("1")) {
+                tournamentScreen.round();
+            } else if (option.equals("2")) {
+                System.out.println("Good bye");
+                System.exit(0);
             }
+        } catch (IOException e) {
+            System.out.println("WRONG");
         }
+    }
 }
 

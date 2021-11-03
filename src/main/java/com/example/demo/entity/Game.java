@@ -12,16 +12,4 @@ public class Game {
         this.teamFirst = teamFirst;
         this.teamSecond = teamSecond;
     }
-
-//    public Team getWinner(){
-//        String[] str = result.split(":");
-//        int[] ints = new int[str.length];
-//        for(int i = 0; i < str.length; i++)
-//            ints[i] = Integer.valueOf(str[i]);
-//        if(ints[0] == ints[1]) return teamSecond;
-//        return ints[0] > ints[1] ? teamFirst : teamSecond;
-//    }
-
-
-
 }

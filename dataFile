@@ -1,0 +1,13 @@
+
+Round, Team1, Team2, Score
+1/4, Saturday,  Sunday, 3 : 3
+1/4, Thursday,  Friday, 1 : 3
+1/4, Wednesday,  Tuesday, 5 : 6
+1/4, Week,  Monday, 0 : 0
+
+Round, Team1, Team2, Score
+1/2, Friday,  Sunday, 3 : 3
+1/2, Tuesday,  Monday, 6 : 0
+
+Round, Team1, Team2, Score
+Final, Tuesday,  Sunday, 6 : 3

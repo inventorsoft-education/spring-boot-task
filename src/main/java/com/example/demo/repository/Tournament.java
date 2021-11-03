@@ -7,19 +7,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 @AllArgsConstructor
 public class Tournament {
-   private TeamsList teamsList;
+    private TeamsList teamsList;
 
-    public void getWinner(Team teamFirst, Team teamSecond ,String round) {
+    public String getWinner(Team teamFirst, Team teamSecond, String round) {
 
-        String result = teamFirst.getPoints() + " : " + teamSecond.getPoints();
+        String result = round + ", " + teamFirst.getTeamName() + ",  " + teamSecond.getTeamName() + ", " + teamFirst.getPoints() + " : " + teamSecond.getPoints();
         if (teamFirst.getPoints() == teamSecond.getPoints()) {
-           teamsList.deleteTeam(teamFirst);
-        }else if (teamFirst.getPoints() > teamSecond.getPoints()) {
-          teamsList.deleteTeam(teamSecond);
+            teamsList.deleteTeam(teamFirst);
+        } else if (teamFirst.getPoints() > teamSecond.getPoints()) {
+            teamsList.deleteTeam(teamSecond);
         } else if (teamFirst.getPoints() < teamSecond.getPoints()) {
-          teamsList.deleteTeam(teamFirst);
+            teamsList.deleteTeam(teamFirst);
         }
-        System.out.println(round + ", " + teamFirst.getTeamName() + ",  " + teamSecond.getTeamName() + ", " + result);
+        return result;
     }
 }
 

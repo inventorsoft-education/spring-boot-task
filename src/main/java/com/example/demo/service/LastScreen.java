@@ -12,7 +12,7 @@ public class LastScreen {
 
     public void winnerOfTournament() {
         String winner = teamsList.getTeamByIndex(0).getTeamName();
-        System.out.println("____________The Winner of out tournament is " + winner);
+        System.out.println("\n____________The Winner of out tournament is " + winner);
         System.out.println("Good bye");
         System.exit(0);
     }

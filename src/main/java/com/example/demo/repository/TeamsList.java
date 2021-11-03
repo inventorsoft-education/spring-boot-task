@@ -5,12 +5,13 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
-@FieldDefaults(level =  AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeamsList {
-     List<Team> teams = new ArrayList<>();
+    List<Team> teams = new ArrayList<>();
 
     Team Monday = new Team("Monday", "M", "N");
     Team Tuesday = new Team("Tuesday", "T", "E");
@@ -38,9 +39,10 @@ public class TeamsList {
         return teams.size();
     }
 
-    public Team getTeamByIndex(Integer num){
-      return  teams.get(num);
+    public Team getTeamByIndex(Integer num) {
+        return teams.get(num);
     }
+
     public void warning() {
         if (teams.size() % 2 == 0) {
             System.out.println(teams.size());
