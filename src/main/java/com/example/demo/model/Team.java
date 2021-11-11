@@ -12,10 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Team {
     private String name;
-    private String capitan;
+    private String captain;
     private String coach;
 
-    public int roll(){
-        return (int) (1+Math.random()*100);
-    }
 }

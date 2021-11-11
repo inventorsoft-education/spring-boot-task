@@ -1,5 +1,37 @@
 package com.example.demo.repository;
 
-public class MatchRepository {
+import com.example.demo.CSV.CSVlibrary;
+import com.example.demo.model.Match;
+import com.example.demo.model.Team;
+import lombok.Value;
+import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+@Value
+public class MatchRepository implements BaseMatchRepository {
+    List<Match> matches;
+    CSVlibrary csv;
+
+    MatchRepository(CSVlibrary csv){
+        this.csv = csv;
+        matches = new ArrayList<>();
+    }
+
+    @Override
+    public List<Match> getList() {
+        return matches;
+    }
+
+    @Override
+    public void readFromFile() {
+        csv.readMatches(matches);
+    }
+
+    @Override
+    public void writeToFile(List<Match> matches){
+        csv.writeMatches(matches);
+    }
 }

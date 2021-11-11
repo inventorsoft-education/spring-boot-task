@@ -1,20 +1,24 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Team;
-import com.example.demo.tournament.CSVcontroller;
-import org.springframework.stereotype.Repository;
+import com.example.demo.CSV.CSVlibrary;
+import lombok.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Component
+@Value
 public class TeamRepository implements BaseTeamRepository {
 
-    private static final List<Team> teams;
+    List<Team> teams;
+    CSVlibrary csv;
 
-    static {
+    public TeamRepository(CSVlibrary csv) {
+        this.csv = csv;
         teams = new ArrayList<>();
-        CSVcontroller.Read(teams);
+        readFromFile();
     }
 
     @Override
@@ -29,29 +33,25 @@ public class TeamRepository implements BaseTeamRepository {
     }
 
     public void readFromFile() {
-        CSVcontroller.Read(teams);
+        csv.readTeam(teams);
     }
 
     public void writeToFile() {
-        CSVcontroller.Write(teams);
+        csv.writeTeam(teams);
     }
 
-    public void print() {
-        System.out.println("List of commands:\n");
-        for (Team team : teams) {
-            System.out.println("Team name: " + team.getName());
-            System.out.println("Team capitan: " + team.getCapitan());
-            System.out.println("Team coach: " + team.getCoach() + "\n");
-
-        }
+    public void writeToFile(List<Team> teams) {
+        csv.writeTeam(teams);
     }
+
+
     @Override
-    public boolean remove(Team team){
+    public boolean remove(Team team) {
         teams.remove(team);
         return true;
     }
 
-    public boolean checkValidCntOfTeams(){
+    public static boolean checkValidCntOfTeams(List<Team> teams) {
         return teams.size() % 2 == 0;
     }
 
