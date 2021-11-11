@@ -5,7 +5,6 @@ import com.example.demo.model.Team;
 import com.example.demo.tournament.Tournament;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

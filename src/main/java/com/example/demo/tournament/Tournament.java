@@ -10,7 +10,6 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Value;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,7 @@ public class Tournament {
 
     public void createMatchesBasedOnListOfTeams() {
         List<Team> teamList = teams.getList();
-        if (TeamRepository.checkValidCntOfTeams(teamList)) {
+        if (teams.checkValidCntOfTeams()) {
             Random random = new Random();
             int firstRandomNumber;
             int secondRandomNumber;
@@ -43,17 +42,7 @@ public class Tournament {
             int cntOfRounds;
             List<Integer> indexes = generateIndexList(sizeOfIndexArray);
 
-            Supplier<Integer> returnCntOfRounds = () -> {
-                Integer tmp = cntOfMatches + 1;
-                Integer i = 0;
-                while (tmp > 1) {
-                    tmp = tmp / 2;
-                    i++;
-                }
-                return i;
-            };
-
-            cntOfRounds = returnCntOfRounds.get();
+            cntOfRounds = returnCntOfRounds(cntOfMatches);
 
             for (int i = 1; i <= cntOfRounds; i++) {
                 currentRound = i;
@@ -78,7 +67,17 @@ public class Tournament {
 
     }
 
-    public List<Integer> generateIndexList(int indexListSize) {
+    private Integer returnCntOfRounds(int cntOfMatches) {
+        Integer tmp = cntOfMatches + 1;
+        Integer i = 0;
+        while (tmp > 1) {
+            tmp = tmp / 2;
+            i++;
+        }
+        return i;
+    }
+
+    private List<Integer> generateIndexList(int indexListSize) {
         List<Integer> arr = new ArrayList<>();
         for (int i = 0; i < indexListSize; i++) {
             arr.add(i);
@@ -98,7 +97,7 @@ public class Tournament {
         }
     }
 
-    public void exportWinner(){
+    public void exportWinner() {
         String path = "src/main/resources/winner.csv";
 
         try (Writer writer = new FileWriter(path)) {

@@ -2,20 +2,21 @@ package com.example.demo.repository;
 
 import com.example.demo.CSV.CSVlibrary;
 import com.example.demo.model.Match;
-import com.example.demo.model.Team;
+import lombok.AccessLevel;
 import lombok.Value;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Value
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MatchRepository implements BaseMatchRepository {
     List<Match> matches;
     CSVlibrary csv;
 
-    MatchRepository(CSVlibrary csv){
+    MatchRepository(CSVlibrary csv) {
         this.csv = csv;
         matches = new ArrayList<>();
     }
@@ -31,7 +32,7 @@ public class MatchRepository implements BaseMatchRepository {
     }
 
     @Override
-    public void writeToFile(List<Match> matches){
+    public void writeToFile(List<Match> matches) {
         csv.writeMatches(matches);
     }
 }

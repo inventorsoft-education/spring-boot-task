@@ -51,8 +51,8 @@ public class TeamRepository implements BaseTeamRepository {
         return true;
     }
 
-    public static boolean checkValidCntOfTeams(List<Team> teams) {
-        return teams.size() % 2 == 0;
+    public boolean checkValidCntOfTeams() {
+        return this.teams.size() % 2 == 0;
     }
 
 

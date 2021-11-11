@@ -17,4 +17,7 @@ public interface BaseTeamRepository {
 
     void writeToFile(List<Team> teams);
 
+    boolean checkValidCntOfTeams();
+
+
 }

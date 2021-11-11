@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.rmi.UnexpectedException;
