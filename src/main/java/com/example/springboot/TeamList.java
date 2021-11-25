@@ -41,10 +41,6 @@ public class TeamList {
         write();
     }
 
-//    public void deleteTeam(Team team) {
-//        teamList.remove(team);
-//    }
-
     public int getSize() {
         return teamList.size();
     }
