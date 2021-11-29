@@ -1,18 +1,20 @@
 package com.example.demo.model;
 
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Team {
-    private String name;
-    private String captain;
-    private String coach;
-
+    String name;
+    String captain;
+    String coach;
 }
