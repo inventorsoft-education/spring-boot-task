@@ -1,6 +1,7 @@
 package com.example.demo.console;
 
-import com.example.demo.model.Match;
+import com.example.demo.dao.MatchDAO;
+\import com.example.demo.model.Match;
 import com.example.demo.model.Team;
 import com.example.demo.tournament.Tournament;
 import lombok.AllArgsConstructor;
@@ -36,12 +37,11 @@ public class ConsoleInOut {
 
     public void outMatchList(){
         System.out.println("List of matches:\n");
-        for (Match match : tournament.getMatches().getList()) {
-            System.out.println("First team name: " + match.getFirstTeam().getName());
-            System.out.println("Second team name: " + match.getSecondTeam().getName());
+        for (Match match : MatchDAO.getList()) {
+            System.out.println("First team name: " + match.getFirstTeam());
+            System.out.println("Second team name: " + match.getSecondTeam());
             System.out.println("Round: " + match.getRound());
             System.out.println("Score: " + match.getScore());
-
         }
     }
 
@@ -58,20 +58,19 @@ public class ConsoleInOut {
 
     public void outMatch(Match match) {
         System.out.println(match.getRound());
-        System.out.println(match.getFirstTeam().getName());
-        System.out.println(match.getSecondTeam().getName());
+        System.out.println(match.getFirstTeam());
+        System.out.println(match.getSecondTeam());
         System.out.println(match.getScore());
     }
 
     public void outMatch(String firstTeam, String secondTeam) {
         boolean flag = false;
-        for (Match match : tournament.getMatches().getList()) {
-            if (match.getFirstTeam().getName().equals(firstTeam) &&
-                    match.getSecondTeam().getName().equals(secondTeam)) {
+        for (Match match : MatchDAO.getList()) {
+            if (match.getFirstTeam().equals(firstTeam) &&
+                    match.getSecondTeam().equals(secondTeam)) {
                 flag = true;
                 System.out.println("Round, Team 1, Team 2, Score");
                 outMatch(match);
-
             }
         }
         if (!flag) System.out.println("No match found");
@@ -88,10 +87,7 @@ public class ConsoleInOut {
 
     public void outWinner(){
         System.out.println("The winner of tournament: " );
-        for (Team team : tournament.getWinner()) {
-            outTeam(team);
-        }
-        tournament.exportWinner();
+        outTeam(tournament.getWinner());
     }
 
 
