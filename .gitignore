@@ -1,2 +1,7 @@
+README.md
 .idea
 target
+#Maven files
+.mvn/
+mvnw
+mvnw.cmd
