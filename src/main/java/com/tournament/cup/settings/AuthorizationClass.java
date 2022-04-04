@@ -1,9 +1,7 @@
 package com.tournament.cup.settings;
 
 import com.tournament.cup.details.Squad;
-import com.tournament.cup.play.TeamsListEight;
-import com.tournament.cup.play.TeamsListFour;
-import com.tournament.cup.play.TeamsListSixteen;
+import com.tournament.cup.play.TeamsList;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,9 +15,7 @@ import java.util.Scanner;
 public class AuthorizationClass {
     LastClass lastClass;
     TournamentClass tournamentClass;
-    TeamsListEight teamsListEight;
-    TeamsListFour teamsListFour;
-    TeamsListSixteen teamsListSixteen;
+    TeamsList teamsList;
 
     public void register() {
         Scanner in = new Scanner(System.in);
@@ -36,14 +32,8 @@ public class AuthorizationClass {
         String coachName = in.nextLine();
         System.out.println("Coach's name is " + coachName);
 
-        teamsListSixteen.add(new Squad(teamName, captainName, coachName));
-        teamsListSixteen.madeList();
-
-        teamsListEight.add(new Squad(teamName, captainName, coachName));
-        teamsListEight.madeList();
-
-        teamsListFour.add(new Squad(teamName, captainName, coachName));
-        teamsListFour.madeList();
+        teamsList.add(new Squad(teamName, captainName, coachName));
+        teamsList.madeList();
 
 
     }
