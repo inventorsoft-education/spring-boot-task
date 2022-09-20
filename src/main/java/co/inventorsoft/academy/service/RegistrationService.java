@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
-import static co.inventorsoft.academy.enums.ColorText.RED_BOLD_BRIGHT;
-import static co.inventorsoft.academy.enums.ColorText.GREEN_BOLD_BRIGHT;
 import static co.inventorsoft.academy.enums.ColorText.RESET;
+import static co.inventorsoft.academy.enums.ColorText.RED;
 import static co.inventorsoft.academy.enums.ColorText.GREEN;
 import static co.inventorsoft.academy.enums.ColorText.BLUE;
 
@@ -28,19 +27,19 @@ public class RegistrationService {
         Scanner in = new Scanner(System.in);
         boolean exitFlag = true;
         while (exitFlag) {
-            System.out.println(BLUE + "Please choose number of option:\n" + " 1. Create team \n" +
-                    " 2. Start tournament\n" + " 3. Exit" + RESET);
+            System.out.println(BLUE.getValue() + "Please choose number of option:\n" + " 1. Create team \n" +
+                    " 2. Start tournament\n" + " 3. Exit" + RESET.getValue());
             String option = in.nextLine();
             switch (option) {
                 /* Add new team to list  */
                 case "1":
                     System.out.println("************************************************************" +
                             "********************************************************");
-                    System.out.print(GREEN + "Input name of Team: " + RESET);
+                    System.out.print(GREEN.getValue() + "Input name of Team: " + RESET.getValue());
                     String name = in.nextLine();
-                    System.out.print(GREEN + "Input pilot #1 name: " + RESET);
+                    System.out.print(GREEN.getValue() + "Input pilot #1 name: " + RESET.getValue());
                     String pilot1 = in.nextLine();
-                    System.out.print(GREEN + "Input pilot #2 name: " + RESET);
+                    System.out.print(GREEN.getValue() + "Input pilot #2 name: " + RESET.getValue());
                     String pilot2 = in.nextLine();
                     teamsList.add(new Team(name, pilot1, pilot2));
                     System.out.println("************************************************************" +
@@ -53,13 +52,13 @@ public class RegistrationService {
                 /*  Exit of application */
                 case "3":
                     System.out.println("******************************************************" +
-                            GREEN_BOLD_BRIGHT + " Goodbye!" + RESET +
+                            GREEN.getValue() + " Goodbye!" + RESET.getValue() +
                             " ****************************************************");
                     System.exit(0);
                     break;
                 /*  Wrong input case */
                 default:
-                    System.out.println(RED_BOLD_BRIGHT + "Wrong input parameter! Go to next step." + RESET);
+                    System.out.println(RED.getValue() + "Wrong input parameter! Go to next step." + RESET.getValue());
                     exitFlag = false;
                     break;
             }

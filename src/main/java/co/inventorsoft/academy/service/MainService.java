@@ -24,9 +24,9 @@ public class MainService {
     public void mainScreen() {
         System.out.println("************************************************************" +
                 "********************************************************");
-        System.out.println(GREEN + "\t\t\t\t\t\t\t\t\t\t\t\t\tWelcome!!");
+        System.out.println(GREEN.getValue() + "\t\t\t\t\t\t\t\t\t\t\t\t\tWelcome!!");
         System.out.println("\t\t\t\t\tPlease, register your team to derby with Formula1 teams in 1vs1 format");
-        System.out.println(RESET + "************************************************************" +
+        System.out.println(RESET.getValue() + "************************************************************" +
                 "********************************************************");
         registration.createTeam();
         tournament.start();

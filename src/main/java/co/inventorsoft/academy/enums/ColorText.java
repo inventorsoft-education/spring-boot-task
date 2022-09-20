@@ -6,13 +6,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ColorText {
-    RESET("\033[0m"),
-    GREEN("\033[0)32m"),
-    YELLOW("\033[0)33m"),
-    BLUE("\033[0)34m"),
-    PURPLE("\033[0)35m"),
-    CYAN("\033[0)36m"),
-    RED_BOLD_BRIGHT("\033[1)91m"),
-    GREEN_BOLD_BRIGHT("\033[1)92m");
+    RESET("\u001B[0m"),
+    GREEN("\u001B[32m"),
+    YELLOW("\u001B[33m"),
+    BLUE("\u001B[34m"),
+    PURPLE("\u001B[35m"),
+    CYAN("\u001B[36m"),
+    RED("\u001B[31m");
     private final String value;
 }

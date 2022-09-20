@@ -7,13 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
-import static co.inventorsoft.academy.enums.ColorText.GREEN_BOLD_BRIGHT;
-import static co.inventorsoft.academy.enums.ColorText.RESET;
-import static co.inventorsoft.academy.enums.ColorText.GREEN;
-import static co.inventorsoft.academy.enums.ColorText.BLUE;
-import static co.inventorsoft.academy.enums.ColorText.YELLOW;
-import static co.inventorsoft.academy.enums.ColorText.PURPLE;
-import static co.inventorsoft.academy.enums.ColorText.CYAN;
+import static co.inventorsoft.academy.enums.ColorText.*;
 
 @Component
 @AllArgsConstructor
@@ -32,15 +26,21 @@ public class TournamentService {
      * This method create tournament,write result to console and data.csv file
      */
     public void start() {
-        System.out.println("*****************************************************" + GREEN +
-                "Teams list" + RESET + "*****************************************************" + PURPLE);
+        System.out.println("*****************************************************" + GREEN.getValue() +
+                "Teams list" + RESET.getValue() + "*****************************************************" + PURPLE.getValue());
         /* create correct pool of teams to play tournament */
-        teamsList.createCorrectPool();
-        System.out.println(RESET + "************************************************************" +
+        if (teamsList.size() != 0) {
+            teamsList.createCorrectPool();
+        } else {
+            System.out.println(RESET.getValue() + "*****************************************************" + RED.getValue() +
+                    "List Empty" + RESET.getValue() + "*****************************************************");
+        System.exit(0);
+        }
+        System.out.println(RESET.getValue() + "************************************************************" +
                 "********************************************************");
-        System.out.println("*****" + GREEN + "Round" + RESET + "************************************"
-                + GREEN + "Team 1" + RESET + "***************" + GREEN + "Team 2" + RESET
-                + "**********************************" + GREEN + "Score" + RESET + "****");
+        System.out.println("*****" + GREEN.getValue() + "Round" + RESET.getValue() + "************************************"
+                + GREEN.getValue() + "Team 1" + RESET.getValue() + "***************" + GREEN.getValue() + "Team 2" + RESET.getValue()
+                + "**********************************" + GREEN.getValue() + "Score" + RESET.getValue() + "****");
         fileWriter.write("Round, Team 1, Team 2, Score");
         while (teamsList.size() != 1) {
             teamsList.generateNewPoints();
@@ -78,8 +78,8 @@ public class TournamentService {
      * @return String value of result
      */
     public String getWinner(Team teamFirst, Team teamSecond, String round) {
-        String result = String.format("*" + BLUE + "%8s\t" + RESET + "   * " + YELLOW
-                        + "%40s - %-40s" + RESET + " * " + CYAN + "%5s:%-5s" + RESET + " *",
+        String result = String.format("*" + BLUE.getValue() + "%8s\t" + RESET.getValue() + "   * " + YELLOW.getValue()
+                        + "%40s - %-40s" + RESET.getValue() + " * " + CYAN.getValue() + "%5s:%-5s" + RESET.getValue() + " *",
                 round, teamFirst.getName(), teamSecond.getName(),
                 teamFirst.getPoints(), teamSecond.getPoints());
         /* delete loser team */
@@ -94,8 +94,8 @@ public class TournamentService {
         String winner = teamsList.getTeam(0).getName();
         System.out.println("****************************************************" +
                 "****************************************************************");
-        System.out.println(GREEN_BOLD_BRIGHT + "\t\t\t\t\t\t\t\tThe Winner of tournament is " + winner);
-        System.out.println(RESET + "****************************************************" +
+        System.out.println(GREEN.getValue() + "\t\t\t\t\t\t\t\tThe Winner of tournament is " + winner);
+        System.out.println(RESET.getValue() + "****************************************************" +
                 "****************************************************************");
     }
 }
