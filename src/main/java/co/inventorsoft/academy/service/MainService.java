@@ -1,12 +1,14 @@
 package co.inventorsoft.academy.service;
 
-import co.inventorsoft.academy.interfaces.ColorText;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static co.inventorsoft.academy.enums.ColorText.RESET;
+import static co.inventorsoft.academy.enums.ColorText.GREEN;
+
 @Component
 @AllArgsConstructor
-public class MainService implements ColorText {
+public class MainService {
     /**
      * In this tournament service we start tournament and calculate winner
      */

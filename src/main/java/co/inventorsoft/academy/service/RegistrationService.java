@@ -1,6 +1,5 @@
 package co.inventorsoft.academy.service;
 
-import co.inventorsoft.academy.interfaces.ColorText;
 import co.inventorsoft.academy.model.Team;
 import co.inventorsoft.academy.dao.TeamDAO;
 import lombok.AllArgsConstructor;
@@ -8,9 +7,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+import static co.inventorsoft.academy.enums.ColorText.RED_BOLD_BRIGHT;
+import static co.inventorsoft.academy.enums.ColorText.GREEN_BOLD_BRIGHT;
+import static co.inventorsoft.academy.enums.ColorText.RESET;
+import static co.inventorsoft.academy.enums.ColorText.GREEN;
+import static co.inventorsoft.academy.enums.ColorText.BLUE;
+
 @Component
 @AllArgsConstructor
-public class RegistrationService implements ColorText {
+public class RegistrationService {
     /**
      * list with team on this tournament
      */

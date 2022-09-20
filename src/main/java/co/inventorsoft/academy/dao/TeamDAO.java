@@ -1,6 +1,5 @@
 package co.inventorsoft.academy.dao;
 
-import co.inventorsoft.academy.interfaces.ColorText;
 import co.inventorsoft.academy.model.Team;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-public class TeamDAO implements ColorText {
+public class TeamDAO{
     /**
      * The list of teams
      */
@@ -20,10 +19,9 @@ public class TeamDAO implements ColorText {
      * This method add team to list
      *
      * @param team new team
-     * @return true if add is correct, else false;
      */
-    public boolean add(Team team) {
-        return teams.add(team);
+    public void add(Team team) {
+        teams.add(team);
     }
 
     /**

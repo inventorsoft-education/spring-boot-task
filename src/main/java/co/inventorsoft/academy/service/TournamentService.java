@@ -1,6 +1,5 @@
 package co.inventorsoft.academy.service;
 
-import co.inventorsoft.academy.interfaces.ColorText;
 import co.inventorsoft.academy.model.Team;
 import co.inventorsoft.academy.dao.TeamDAO;
 import lombok.AccessLevel;
@@ -8,10 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import static co.inventorsoft.academy.enums.ColorText.GREEN_BOLD_BRIGHT;
+import static co.inventorsoft.academy.enums.ColorText.RESET;
+import static co.inventorsoft.academy.enums.ColorText.GREEN;
+import static co.inventorsoft.academy.enums.ColorText.BLUE;
+import static co.inventorsoft.academy.enums.ColorText.YELLOW;
+import static co.inventorsoft.academy.enums.ColorText.PURPLE;
+import static co.inventorsoft.academy.enums.ColorText.CYAN;
+
 @Component
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TournamentService implements ColorText {
+public class TournamentService {
     /**
      * list with team on this tournament
      */
