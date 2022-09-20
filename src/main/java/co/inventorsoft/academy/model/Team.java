@@ -1,6 +1,10 @@
 package co.inventorsoft.academy.model;
 
-import lombok.*;
+
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @RequiredArgsConstructor

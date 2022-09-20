@@ -11,6 +11,9 @@ import java.util.Scanner;
 @Component
 @AllArgsConstructor
 public class RegistrationService implements ColorText {
+    /**
+     * list with team on this tournament
+     */
     private TeamDAO teamsList;
 
     /**
@@ -18,13 +21,14 @@ public class RegistrationService implements ColorText {
      */
     public void createTeam() {
         Scanner in = new Scanner(System.in);
-        boolean kay = true;
-        while (kay) {
+        boolean exitFlag = true;
+        while (exitFlag) {
             System.out.println(BLUE + "Please choose number of option:\n" + " 1. Create team \n" +
                     " 2. Start tournament\n" + " 3. Exit" + RESET);
             String option = in.nextLine();
             switch (option) {
-                case "1": //add new team
+                /* Add new team to list  */
+                case "1":
                     System.out.println("************************************************************" +
                             "********************************************************");
                     System.out.print(GREEN + "Input name of Team: " + RESET);
@@ -37,21 +41,24 @@ public class RegistrationService implements ColorText {
                     System.out.println("************************************************************" +
                             "********************************************************");
                     break;
-                case "2": //and registration and start tournament
-                    kay = false;
+                /* End registration and go to next step (start tournament) */
+                case "2":
+                    exitFlag = false;
                     break;
-                case "3": //exit
+                /*  Exit of application */
+                case "3":
                     System.out.println("******************************************************" +
                             GREEN_BOLD_BRIGHT + " Goodbye!" + RESET +
                             " ****************************************************");
                     System.exit(0);
-                default: // error input
+                    break;
+                /*  Wrong input case */
+                default:
                     System.out.println(RED_BOLD_BRIGHT + "Wrong input parameter! Go to next step." + RESET);
-                    kay = false;
+                    exitFlag = false;
                     break;
             }
         }
-        teamsList.createList(); //add real F1 teams to pool
         System.out.println("************************************************************" +
                 "********************************************************");
     }

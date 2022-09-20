@@ -12,7 +12,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TournamentService implements ColorText {
+    /**
+     * list with team on this tournament
+     */
     TeamDAO teamsList;
+    /**
+     * file writer service
+     */
     FileWriterService fileWriter;
 
     /**
@@ -21,27 +27,22 @@ public class TournamentService implements ColorText {
     public void start() {
         System.out.println("*****************************************************" + GREEN +
                 "Teams list" + RESET + "*****************************************************" + PURPLE);
-        teamsList.createCorrectPool(); //create 8 teams to play tournament
+        /* create correct pool of teams to play tournament */
+        teamsList.createCorrectPool();
         System.out.println(RESET + "************************************************************" +
                 "********************************************************");
         System.out.println("*****" + GREEN + "Round" + RESET + "************************************"
                 + GREEN + "Team 1" + RESET + "***************" + GREEN + "Team 2" + RESET
                 + "**********************************" + GREEN + "Score" + RESET + "****");
+        fileWriter.write("Round, Team 1, Team 2, Score");
         while (teamsList.size() != 1) {
-            if (teamsList.size() == 2) {//final
-                teamsList.generateNewPoints();
-                calculateResult("Final");
-                winner();
-            } else if (teamsList.size() == 4) {//semi-final
-                teamsList.generateNewPoints();
-                calculateResult("1/2");
-            } else if (teamsList.size() == 8) { // start tournament
-                fileWriter.write("Round, Team 1, Team 2, Score");
-                calculateResult("1/4");
-            }
+            teamsList.generateNewPoints();
+            calculateResult(teamsList.size() == 2 ? "Final" : "1/" + teamsList.size() / 2);
             System.out.println("************************************************************" +
                     "********************************************************");
         }
+        /* display winner of tournament*/
+        winner();
     }
 
     /**
@@ -74,7 +75,7 @@ public class TournamentService implements ColorText {
                         + "%40s - %-40s" + RESET + " * " + CYAN + "%5s:%-5s" + RESET + " *",
                 round, teamFirst.getName(), teamSecond.getName(),
                 teamFirst.getPoints(), teamSecond.getPoints());
-        //delete loser team
+        /* delete loser team */
         teamsList.deleteTeam(teamFirst.getPoints() > teamSecond.getPoints() ? teamSecond : teamFirst);
         return result;
     }

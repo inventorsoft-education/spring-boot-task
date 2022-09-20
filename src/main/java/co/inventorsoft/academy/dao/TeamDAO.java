@@ -4,28 +4,17 @@ import co.inventorsoft.academy.interfaces.ColorText;
 import co.inventorsoft.academy.model.Team;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 @Component
 public class TeamDAO implements ColorText {
-    private final List<Team> teams = new ArrayList<>(); //list of teams
-    private static final int COUNT_OF_TEAM = 8; // size of tournament
-
     /**
-     * This method add to list 10 teams
+     * The list of teams
      */
-    public void createList() {
-        teams.add(new Team("Scuderia Ferrari", "Charles Leclerc", "Carlos Sainz Jr."));
-        teams.add(new Team("McLaren F1 Team", "Daniel Ricciardo", "Lando Norris"));
-        teams.add(new Team("Mercedes-AMG Petronas F1 Team", "Lewis Hamilton", "George Russell"));
-        teams.add(new Team("BWT Alpine F1 Team", "Fernando Alonso", "Esteban Ocon"));
-        teams.add(new Team("Scuderia AlphaTauri", "Pierre Gasly", "Yuki Tsunoda"));
-        teams.add(new Team("Aston Martin F1 Team", "Sebastian Vettel", " Lance Stroll"));
-        teams.add(new Team("Alfa Romeo F1 Team Orlen", "Zhou Guanyu", "Valtteri Bottas"));
-        teams.add(new Team("Oracle Red Bull Racing", "Max Verstappen", "Sergio Pérez"));
-        teams.add(new Team("Williams Racing", "Nicholas Latifi", "Alexander Albon"));
-        teams.add(new Team("Haas F1 Team", "Kevin Magnussen", "Mick Schumacher"));
-    }
+    private final List<Team> teams = new ArrayList<>();
 
     /**
      * This method add team to list
@@ -60,9 +49,20 @@ public class TeamDAO implements ColorText {
      * This method delete random team if size of list bigger than COUNT_OF_TEAM
      */
     public void createCorrectPool() {
-        Collections.shuffle(teams, new Random()); //random shuffle my list
-        teams.subList(COUNT_OF_TEAM, teams.size()).clear();  //delete superfluous teams
-        teams.forEach(System.out::println); //display teams on list
+        /* random shuffle my list */
+        Collections.shuffle(teams, new Random());
+        int size = teams.size();
+        /* delete superfluous teams */
+        while (true) {
+            if (size > 0 && (size & -size) == size) {
+                break;
+            } else {
+                teams.remove(size - 1);
+                size = teams.size();
+            }
+        }
+        /* display list of teams in tournament*/
+        teams.forEach(System.out::println);
     }
 
     /**
