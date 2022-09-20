@@ -15,6 +15,9 @@ public class Application implements CommandLineRunner {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * Start of my Application
+     */
     @Override
     public void run(String... args) {
         mainScreen.mainScreen();

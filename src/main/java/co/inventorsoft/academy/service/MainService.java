@@ -20,8 +20,8 @@ public class MainService implements ColorText {
         System.out.println("\t\t\t\t\tPlease, register your team to derby with Formula1 teams in 1vs1 format");
         System.out.println(RESET + "************************************************************" +
                 "********************************************************");
-        registration.createTeam();
-        tournament.start();
+        registration.createTeam(); //registration service
+        tournament.start();// start tournament
     }
 }
 

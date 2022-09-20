@@ -1,33 +1,20 @@
 package co.inventorsoft.academy.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.*;
 
-@Getter
-@EqualsAndHashCode
-@NoArgsConstructor
+@Data
+@RequiredArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
 public class Team {
+    @NonNull
+    @ToString.Include(name = "Name:")
     private String name;
+    @NonNull
+    @ToString.Include(name = "Pilot1:")
     private String pilot1;
+    @NonNull
+    @ToString.Include(name = "Pilot2:")
     private String pilot2;
     private Integer points = (int) (Math.random() * 10);
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
-    public Team(String name, String pilot1, String pilot2) {
-        this.name = name;
-        this.pilot1 = pilot1;
-        this.pilot2 = pilot2;
-    }
-
-    public String toString() {
-        return "Team: " + this.getName() +
-                ", pilot #1: " + this.getPilot1() +
-                ", pilot #2: " + this.getPilot2() ;
-    }
 }
 

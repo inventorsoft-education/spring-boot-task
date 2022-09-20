@@ -8,8 +8,8 @@ import java.util.*;
 
 @Component
 public class TeamDAO implements ColorText {
-    private final List<Team> teams = new ArrayList<>();
-    private static final int COUNT_OF_TEAM = 8;
+    private final List<Team> teams = new ArrayList<>(); //list of teams
+    private static final int COUNT_OF_TEAM = 8; // size of tournament
 
     /**
      * This method add to list 10 teams
@@ -57,20 +57,12 @@ public class TeamDAO implements ColorText {
     }
 
     /**
-     * This method delete random team is size of list bigger than COUNT_OF_TEAM
+     * This method delete random team if size of list bigger than COUNT_OF_TEAM
      */
     public void createCorrectPool() {
-        Collections.shuffle(teams, new Random());
-        while (teams.size() > COUNT_OF_TEAM) {
-            teams.remove(teams.size() - 1);
-        }
-        System.out.println("*****************************************************" + GREEN +
-                "Teams list" + RESET + "*****************************************************");
-        for (Team team : teams) {
-            System.out.println(PURPLE + team + RESET);
-        }
-        System.out.println("************************************************************" +
-                "********************************************************");
+        Collections.shuffle(teams, new Random()); //random shuffle my list
+        teams.subList(COUNT_OF_TEAM, teams.size()).clear();  //delete superfluous teams
+        teams.forEach(System.out::println); //display teams on list
     }
 
     /**
@@ -86,9 +78,7 @@ public class TeamDAO implements ColorText {
      * This method generate new value of point in next round
      */
     public void generateNewPoints() {
-        for (Team team : teams) {
-            team.setPoints((int) (Math.random() * 10));
-        }
+        teams.forEach(team -> team.setPoints((int) (Math.random() * 10)));
     }
 }
 

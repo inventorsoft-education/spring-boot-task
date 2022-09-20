@@ -11,7 +11,6 @@ import java.util.Scanner;
 @Component
 @AllArgsConstructor
 public class RegistrationService implements ColorText {
-
     private TeamDAO teamsList;
 
     /**
@@ -25,7 +24,7 @@ public class RegistrationService implements ColorText {
                     " 2. Start tournament\n" + " 3. Exit" + RESET);
             String option = in.nextLine();
             switch (option) {
-                case "1":
+                case "1": //add new team
                     System.out.println("************************************************************" +
                             "********************************************************");
                     System.out.print(GREEN + "Input name of Team: " + RESET);
@@ -38,15 +37,15 @@ public class RegistrationService implements ColorText {
                     System.out.println("************************************************************" +
                             "********************************************************");
                     break;
-                case "2":
+                case "2": //and registration and start tournament
                     kay = false;
                     break;
-                case "3":
+                case "3": //exit
                     System.out.println("******************************************************" +
                             GREEN_BOLD_BRIGHT + " Goodbye!" + RESET +
                             " ****************************************************");
                     System.exit(0);
-                default:
+                default: // error input
                     System.out.println(RED_BOLD_BRIGHT + "Wrong input parameter! Go to next step." + RESET);
                     kay = false;
                     break;

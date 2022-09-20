@@ -19,25 +19,25 @@ public class TournamentService implements ColorText {
      * This method create tournament,write result to console and data.csv file
      */
     public void start() {
-        teamsList.createCorrectPool();
+        System.out.println("*****************************************************" + GREEN +
+                "Teams list" + RESET + "*****************************************************" + PURPLE);
+        teamsList.createCorrectPool(); //create 8 teams to play tournament
+        System.out.println(RESET + "************************************************************" +
+                "********************************************************");
         System.out.println("*****" + GREEN + "Round" + RESET + "************************************"
                 + GREEN + "Team 1" + RESET + "***************" + GREEN + "Team 2" + RESET
                 + "**********************************" + GREEN + "Score" + RESET + "****");
         while (teamsList.size() != 1) {
-            switch (teamsList.size()) {
-                case 2:
-                    teamsList.generateNewPoints();
-                    calculateResult("Final");
-                    winner();
-                    break;
-                case 4:
-                    teamsList.generateNewPoints();
-                    calculateResult("1/2");
-                    break;
-                case 8:
-                    fileWriter.write("Round, Team 1, Team 2, Score");
-                    calculateResult("1/4");
-                    break;
+            if (teamsList.size() == 2) {//final
+                teamsList.generateNewPoints();
+                calculateResult("Final");
+                winner();
+            } else if (teamsList.size() == 4) {//semi-final
+                teamsList.generateNewPoints();
+                calculateResult("1/2");
+            } else if (teamsList.size() == 8) { // start tournament
+                fileWriter.write("Round, Team 1, Team 2, Score");
+                calculateResult("1/4");
             }
             System.out.println("************************************************************" +
                     "********************************************************");
@@ -74,13 +74,8 @@ public class TournamentService implements ColorText {
                         + "%40s - %-40s" + RESET + " * " + CYAN + "%5s:%-5s" + RESET + " *",
                 round, teamFirst.getName(), teamSecond.getName(),
                 teamFirst.getPoints(), teamSecond.getPoints());
-        if (teamFirst.getPoints().equals(teamSecond.getPoints())) {
-            teamsList.deleteTeam(teamFirst);
-        } else if (teamFirst.getPoints() > teamSecond.getPoints()) {
-            teamsList.deleteTeam(teamSecond);
-        } else if (teamFirst.getPoints() < teamSecond.getPoints()) {
-            teamsList.deleteTeam(teamFirst);
-        }
+        //delete loser team
+        teamsList.deleteTeam(teamFirst.getPoints() > teamSecond.getPoints() ? teamSecond : teamFirst);
         return result;
     }
 
