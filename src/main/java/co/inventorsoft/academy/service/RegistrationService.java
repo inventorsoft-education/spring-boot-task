@@ -80,6 +80,7 @@ public class RegistrationService {
      * @return true - if number is a power of two, else - false
      */
     private boolean isPowerOfTwo(int x) {
-        return x != 0 && ((x & (x - 1)) == 0);
+        double i = Math.log(x) / Math.log(2);
+        return i == Math.floor(i);
     }
 }
