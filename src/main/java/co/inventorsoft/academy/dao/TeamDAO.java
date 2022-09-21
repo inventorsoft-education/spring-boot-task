@@ -44,22 +44,10 @@ public class TeamDAO{
     }
 
     /**
-     * This method delete random team if size of list bigger than COUNT_OF_TEAM
+     * This method random shuffle team and display list of teams
      */
-    public void createCorrectPool() {
-        /* random shuffle my list */
+    public void displayTeams() {
         Collections.shuffle(teams, new Random());
-        int size = teams.size();
-        /* delete superfluous teams */
-        while (true) {
-            if (size > 0 && (size & -size) == size) {
-                break;
-            } else {
-                teams.remove(size - 1);
-                size = teams.size();
-            }
-        }
-        /* display list of teams in tournament*/
         teams.forEach(System.out::println);
     }
 

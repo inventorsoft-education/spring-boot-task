@@ -28,14 +28,7 @@ public class TournamentService {
     public void start() {
         System.out.println("*****************************************************" + GREEN.getValue() +
                 "Teams list" + RESET.getValue() + "*****************************************************" + PURPLE.getValue());
-        /* create correct pool of teams to play tournament */
-        if (teamsList.size() != 0) {
-            teamsList.createCorrectPool();
-        } else {
-            System.out.println(RESET.getValue() + "*****************************************************" + RED.getValue() +
-                    "List Empty" + RESET.getValue() + "*****************************************************");
-        System.exit(0);
-        }
+           teamsList.displayTeams();
         System.out.println(RESET.getValue() + "************************************************************" +
                 "********************************************************");
         System.out.println("*****" + GREEN.getValue() + "Round" + RESET.getValue() + "************************************"

@@ -45,9 +45,15 @@ public class RegistrationService {
                     System.out.println("************************************************************" +
                             "********************************************************");
                     break;
-                /* End registration and go to next step (start tournament) */
+                /* check team list and go to next step (start tournament) */
                 case "2":
-                    exitFlag = false;
+                    if (isPowerOfTwo(teamsList.size()) && teamsList.size() >= 4) {
+                        exitFlag = false;
+                    } else {
+                        System.out.println("***********************************" + RED.getValue() +
+                                " You input " + teamsList.size() + " teams please, input more teams! " +
+                                RESET.getValue() + "************************************");
+                    }
                     break;
                 /*  Exit of application */
                 case "3":
@@ -65,5 +71,15 @@ public class RegistrationService {
         }
         System.out.println("************************************************************" +
                 "********************************************************");
+    }
+
+    /**
+     * This method check number if it is a power of two number
+     *
+     * @param x input number
+     * @return true - if number is a power of two, else - false
+     */
+    private boolean isPowerOfTwo(int x) {
+        return x != 0 && ((x & (x - 1)) == 0);
     }
 }
