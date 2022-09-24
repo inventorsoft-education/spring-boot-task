@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div style="background-color: #dddddd; padding: 8px;margin: 8px;">
+    <button type="button" onclick="tossTeams()">Toss Teams</button>
+    <div id="get-toss"></div>
+</div>
+<div style="background-color: #dddddd; padding: 8px;margin: 8px;">
+    <button type="button" onclick="playMatch()"> Play Match</button>
+    <div id="get-play"></div>
+</div>
+
+<form>
+    <div class="formBox">
+        <label for="name">name</label>
+        <input type="text" id="name" />
+    </div>
+    <div class="formBox">
+        <label for="capitan">capitan</label>
+        <input type="text" id="capitan" />
+    </div>
+    <div class="formBox">
+        <label for="coach">coach</label>
+        <input type="text" id="coach" />
+    </div>
+    <div class="formBox">
+        <button id="btn">Click to Add</button>
+    </div>
+    <div id="msg">
+        <pre></pre>
+    </div>
+</form>
+
+
+</body>
+<script>
+    function addTeam() {
+        let movie = {
+            name: document.getElementById('name').value,
+            capitan: document.getElementById('capitan').value,
+            coach: document.getElementById('coach').value
+        };
+
+        fetch('http://localhost:8081/api/team', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body:  JSON.stringify(movie)
+        })
+
+            .then(res => {
+                if (res.ok) { console.log("HTTP request successful") }
+                else { console.log("HTTP request unsuccessful") }
+                return res
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error))
+
+    }
+    document.addEventListener('DOMContentLoaded', ()=>{
+        document.getElementById('btn').addEventListener('click', addTeam);
+    });
+
+    function tossTeams() {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                const firstElem = JSON.parse(this.responseText);
+                document.getElementById("get-toss").innerHTML = "<b>" + firstElem.name + "</b> </br>";
+
+            }
+        };
+        xhttp.open("POST", " http://localhost:8081/api/match/toss", true);
+
+
+        xhttp.send();
+    }
+    function playMatch() {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                const firstElem = JSON.parse(this.responseText);
+                document.getElementById("get-play").innerHTML = "<b>" + firstElem.name + "</b> </br>";
+
+            }
+        };
+        xhttp.open("POST", " http://localhost:8081/api/match/play", true);
+
+
+        xhttp.send();
+    }
+
+</script>
+</html>

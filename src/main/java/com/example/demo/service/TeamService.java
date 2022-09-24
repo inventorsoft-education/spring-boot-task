@@ -1,10 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.models.Team;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 
-import java.util.*;
+
 
 @Component
 public class TeamService {
@@ -44,6 +50,9 @@ public class TeamService {
         availableTeams.remove(team);
     }
 
+    public Map<String,Team> findAllTeams(){
+        return allTeams;
+    }
 
     public Optional<Team> getRandomAvailableTeam(Integer wins) {
         return availableTeams.stream().filter(t -> Objects.equals(t.getWins(), wins)).findAny();
