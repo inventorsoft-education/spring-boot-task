@@ -17,7 +17,6 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class TeamService {
-
   TeamRepository teamRepository;
   public void create(TeamRequest request){
     String name = request.getName();

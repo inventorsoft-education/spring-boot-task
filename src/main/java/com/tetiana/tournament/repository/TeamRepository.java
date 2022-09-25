@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public class TeamRepository {
-  public static List<Team> TEAMS = new ArrayList<>();
+  public static final List<Team> TEAMS = new ArrayList<>();
 
   static {
     TEAMS.add(new Team("name1", "capitan1", "coach1"));

@@ -23,7 +23,6 @@ public class View {
   public static final List<Integer> NUMBERS = List.of(2, 4, 8, 16, 32, 64);
 
   public void showGames(List<Game> games) {
-    System.out.println("<<<<<LEVEL " + games.stream().findFirst().get().getLevel() + ">>>>>");
     games.forEach(System.out::println);
     System.out.println();
   }

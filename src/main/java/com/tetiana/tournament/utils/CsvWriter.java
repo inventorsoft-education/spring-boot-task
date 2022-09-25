@@ -1,4 +1,4 @@
-package com.tetiana.tournament.view;
+package com.tetiana.tournament.utils;
 
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;

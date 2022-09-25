@@ -1,6 +1,8 @@
 package com.tetiana.tournament.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -8,7 +10,6 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @Setter
-@Builder
 @FieldDefaults(level = PRIVATE)
 @AllArgsConstructor
 public class Game {

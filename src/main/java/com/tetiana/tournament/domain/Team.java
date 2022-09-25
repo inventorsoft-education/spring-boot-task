@@ -1,15 +1,17 @@
 package com.tetiana.tournament.domain;
 
-import lombok.*;
+import com.tetiana.tournament.utils.Utils;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import static lombok.AccessLevel.PRIVATE;
 
-
 @ToString
 @Getter
 @Setter
-@Builder
 @FieldDefaults(level = PRIVATE)
 @AllArgsConstructor
 public class Team {
@@ -26,6 +28,6 @@ public class Team {
   }
 
   public void playGame() {
-    point = (int) (Math.random() * 8);
+    point = Utils.getRandom(8);
   }
 }

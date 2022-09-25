@@ -7,7 +7,7 @@ import com.tetiana.tournament.domain.Team;
 import com.tetiana.tournament.domain.Tournament;
 import com.tetiana.tournament.service.GameService;
 import com.tetiana.tournament.service.TeamService;
-import com.tetiana.tournament.view.CsvWriter;
+import com.tetiana.tournament.utils.CsvWriter;
 import com.tetiana.tournament.view.View;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

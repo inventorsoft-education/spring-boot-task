@@ -2,64 +2,48 @@ package com.tetiana.tournament.service;
 
 import com.tetiana.tournament.domain.Game;
 import com.tetiana.tournament.domain.Team;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import com.tetiana.tournament.utils.Utils;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static lombok.AccessLevel.PRIVATE;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
-@RequiredArgsConstructor
-@FieldDefaults(level = PRIVATE, makeFinal = true)
+@NoArgsConstructor
 public class GameService {
   public List<Game> generateGameList(List<Team> teams) {
     Collections.shuffle(teams);
-    Team firstTeam, secondTeam;
-    String level;
-    List<Game> games = new ArrayList<>();
-    for (int i = 0; i < teams.size(); i++) {
-      firstTeam = teams.get(i);
-      secondTeam = teams.get(++i);
-      level = "1/" + teams.size() / 2;
-      Game game = new Game(firstTeam, secondTeam, level, writeResult(firstTeam, secondTeam));
-      games.add(game);
-    }
-    return games;
+    return IntStream.range(0, teams.size()/2)
+        .mapToObj(i -> generateGame(teams, i))
+        .toList();
+  }
+
+  private Game generateGame(List<Team> teams, int i) {
+    String level = "1/" + teams.size() / 2;
+    int size = teams.size()/2;
+    return new Game(teams.get(i), teams.get(i + size), level, writeResult(teams.get(i), teams.get(i + size)));
   }
 
   private String writeResult(Team t1, Team t2) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(t1.getName())
-        .append(":")
-        .append(t2.getName())
-        .append(" --->> ")
-        .append(t1.getPoint())
-        .append(":")
-        .append(t2.getPoint());
-    return builder.toString();
+    return String.format(" %s : %s -----> %d : %d", t1.getName(), t2.getName(), t1.getPoint(), t2.getPoint());
   }
 
   public List<Team> findWinners(List<Game> games) {
-    List<Team> teams = new ArrayList<>();
-    for (Game game : games) {
-      Team team = chooseTeam(game.getFirstTeam(), game.getSecondTeam());
-      teams.add(team);
-    }
-    return teams;
+    return games.stream().map(this::chooseTeam).collect(Collectors.toList());
   }
 
-  private Team chooseTeam(Team firstTeam, Team secondTeam) {
+  private Team chooseTeam(Game game) {
+    Team firstTeam = game.getFirstTeam();
+    Team secondTeam = game.getSecondTeam();
     if (firstTeam.getPoint() > secondTeam.getPoint()) {
       return firstTeam;
     } else if (firstTeam.getPoint() < secondTeam.getPoint()) {
       return secondTeam;
-    }
-    else {
-      if ((int) (Math.random() * 2 + 1) == 2) {
+    } else {
+      if ((Utils.getRandom(2) + 1 == 2)) {
         return firstTeam;
       }
     }
