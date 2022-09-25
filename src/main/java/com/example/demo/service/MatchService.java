@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.models.Match;
 import com.example.demo.models.Team;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -15,6 +14,7 @@ public class MatchService {
     private final List<Match> playedMatches;
     private Random random = new Random();
     private int wonMatches = 2;
+    private static final int FIRST_ELEMENT = 0;
 
     private final TeamService teamService;
 
@@ -26,7 +26,7 @@ public class MatchService {
 
 
     public  Match playMatch() {
-        Match match = upcomingMatches.get(0);
+        Match match = upcomingMatches.get(FIRST_ELEMENT);
         String winnerName = random.nextBoolean()?match.getTeam1():match.getTeam2();
 
         Team winner =  teamService.getByName(winnerName);
