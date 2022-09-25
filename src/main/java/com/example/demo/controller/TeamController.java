@@ -24,7 +24,6 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<Team> addTeam(@RequestBody Team team){
         teamService.createTeam(team);
-        System.out.println("create team");
         return new ResponseEntity<>(team, HttpStatus.CREATED);
     }
 

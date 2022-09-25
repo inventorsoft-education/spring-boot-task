@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
-
-
-@Component
+@Service
 public class TeamService {
     private List<Team> availableTeams = new ArrayList<>();
     private Map<String, Team> allTeams = new HashMap<>();

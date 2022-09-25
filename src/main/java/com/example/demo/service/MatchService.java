@@ -7,18 +7,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
-@Component
+import org.springframework.stereotype.Service;
+
+@Service
 public class MatchService {
-    private List<Match> upcomingMatches = new ArrayList<>();
-    private List<Match> playedMatches = new ArrayList<>();
+    private final List<Match> upcomingMatches;
+    private final List<Match> playedMatches;
     private Random random = new Random();
-    int a = 2;
+    private int wonMatches = 2;
 
     private final TeamService teamService;
 
-    public MatchService(TeamService teamService) {
+    public MatchService(TeamService teamService,List<Match> upcomingMatches,List<Match> playedMatches ) {
         this.teamService = teamService;
+        this.upcomingMatches = upcomingMatches;
+        this.playedMatches = playedMatches;
     }
 
 
@@ -33,7 +36,7 @@ public class MatchService {
         upcomingMatches.remove(0);
         playedMatches.add(match);
 
-        if(winner.getWins() >= a) {
+        if(winner.getWins() >= wonMatches) {
             System.out.println("Tournament is over!!!");
             System.out.println("Glory to " + winner.getName());
             System.exit(0);
