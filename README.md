@@ -12,7 +12,7 @@ Create application that generates https://en.wikipedia.org/wiki/Bracket_(tournam
 6) All results for specific tournament should be exportable in CSV format: 
 
 ```
-Round, Team 1, Team 2, Score
+Round, Application.Team 1, Application.Team 2, Score
 
 1/4, Sunshine, Flower, 2:0
 ```
