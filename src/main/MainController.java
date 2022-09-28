@@ -4,16 +4,15 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Controller;
 import java.util.LinkedList;
 
-@Component
+@Controller
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MainController {
     Tournament tournament;
-    private FileRW fileRW;
+    FileRW fileRW;
 
     @Autowired
     public MainController(Tournament tournament, FileRW fileRW) {
